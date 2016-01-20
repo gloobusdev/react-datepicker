@@ -19,22 +19,12 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
     sass: {
-      min: {
+      options: {
+        sourcemap: true
+      },
+      dist: {
         files: {
           "dist/react-datepicker.css": "src/stylesheets/datepicker.scss"
-        },
-        options: {
-          sourcemap: "none",
-          style: "expanded"
-        }
-      },
-      unmin: {
-        files: {
-          "dist/react-datepicker.min.css": "src/stylesheets/datepicker.scss"
-        },
-        options: {
-          sourcemap: "none",
-          style: "compressed"
         }
       }
     },
@@ -118,7 +108,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks("grunt-contrib-sass");
+  grunt.loadNpmTasks("grunt-sass");
   grunt.loadNpmTasks("grunt-scss-lint");
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-webpack");
@@ -127,5 +117,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask("default", ["watch", "scsslint"]);
   grunt.registerTask("travis", ["jscs", "karma", "scsslint"]);
-  grunt.registerTask("build", ["scsslint", "webpack", "sass"]);
+  grunt.registerTask("build", ["webpack", "sass"]);
 };
