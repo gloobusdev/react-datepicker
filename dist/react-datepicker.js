@@ -145,6 +145,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleFocus: function handleFocus() {
 	    var _this = this;
 
+	    if (this.state.focus) {
+	      return;
+	    }
 	    this.props.onFocus();
 	    setTimeout(function () {
 	      _this.setState({ focus: true });
@@ -153,6 +156,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleBlur: function handleBlur() {
 	    var _this2 = this;
 
+	    if (!this.state.focus) {
+	      return;
+	    }
 	    setTimeout(function () {
 	      if (!_this2.state.datePickerHasFocus) {
 	        _this2.props.onBlur(_this2.state.selected);

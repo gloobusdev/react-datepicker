@@ -136,7 +136,8 @@
     border-radius: 2px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
-    color: #text-color; }
+    box-sizing: border-box;
+    color: #000; }
     .datepicker__day--selected:hover, .datepicker__day--in-range:hover {
       background-color: #e3e3e3; }
   .datepicker__day--disabled {
