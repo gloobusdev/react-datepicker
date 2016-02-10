@@ -106,7 +106,14 @@ var Calendar = React.createClass({
   },
 
   header() {
-    return this.props.moment.weekdaysMin().map(function(day, key) {
+    //SMALL HACK, something is wrong with setting week properties in moment.locale
+    let orgWeekdays = this.props.moment.weekdaysMin();
+    let newWeekdays = orgWeekdays[0];
+    orgWeekdays.shift()
+
+    newWeekdays = orgWeekdays.concat(newWeekdays)
+
+    return newWeekdays.map(function(day, key) {
       return <div className="datepicker__day" key={key}>{day}</div>;
     });
   },
