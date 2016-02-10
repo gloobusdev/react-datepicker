@@ -1677,7 +1677,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  },
 	  header: function header() {
-	    return this.props.moment.weekdaysMin().map(function (day, key) {
+	    //SMALL HACK, something is wrong with setting week properties in moment.locale
+	    var orgWeekdays = this.props.moment.weekdaysMin();
+	    var newWeekdays = orgWeekdays[0];
+	    orgWeekdays.shift();
+
+	    newWeekdays = orgWeekdays.concat(newWeekdays);
+
+	    return newWeekdays.map(function (day, key) {
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "datepicker__day", key: key },
