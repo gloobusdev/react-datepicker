@@ -1,6 +1,8 @@
 import moment from "moment";
 import ReactDOM from "react-dom";
 import React from "react";
+import MaskedInput from "react-maskedinput";
+import InputMask from "inputmask-core";
 var DateInput = React.createClass({
 
   getDefaultProps() {
@@ -55,16 +57,26 @@ var DateInput = React.createClass({
   handleChange(event) {
     var value = event.target.value;
     var date = moment(value, this.props.dateFormat, true);
-
-    if (date.isValid()) {
-        this.props.setSelected(date);
-    } else {
-        this.props.invalidateSelected();
-    }
+    const {minDate, maxDate, onValidity, setSelected, invalidateSelected} = this.props
 
     this.setState({
         maybeDate: value
     });
+
+    let valid = false
+    if (date.isValid()) {
+        if (minDate && date.isBefore(minDate)) {
+            // if it's before min date
+        }else if (maxDate && date.isAfter(maxDate)) {
+            // if it's after max date
+        } else {
+            valid = true
+            setSelected(date)
+        }
+    } else {
+        (value && value.replace(/[^0-9]/g,"").length === 8) ? (valid = false) : (valid = true)
+    }
+    onValidity(valid)
   },
 
   safeDateFormat(date) {
@@ -91,18 +103,81 @@ var DateInput = React.createClass({
   },
 
   render() {
-    return <input
+    const {focus, date} = this.props
+    const value = focus ? this.state.maybeDate : date && moment(date).format(this.props.dateFormat)
+    console.log('DATE', date)
+    console.log('MAYBE', this.state.maybeDate)
+    const dateFormatHelper = {}
+    const dateFormat = this.props.dateFormat.replace(/dd/i, "Dd").replace(/mm/i, "Mm").replace(/yyyy/i, "Yyyy")
+    return <MaskedInput
+        style={{'color': this.props.isValid ? undefined : 'red'}}
+        mask={dateFormat}
+        formatCharacters={{
+            'D': {
+                validate: (char) => {
+                    const patt = /[0-3]/
+                    if(patt.test(char)){
+                        dateFormatHelper['D'] = parseInt(char)
+                        return true
+                    }
+                },
+            },
+            'd': {
+                validate: (char) => {
+                    let patt = false
+                    if(dateFormatHelper.D === 0){
+                        patt = /[1-9]/
+                    } else if(dateFormatHelper.D < 3){
+                        patt = /[0-9]/
+                    } else {
+                        patt = /[0-1]/
+                    }
+                    return patt.test(char)
+                },
+            },
+            'M': {
+                validate: (char) => {
+                    const patt = /[0-1]/
+                    if(patt.test(char)){
+                        dateFormatHelper['M'] = parseInt(char)
+                        return true
+                    }
+                },
+            },
+            'm': {
+                validate: (char) => {
+                    let patt = false
+                    if(dateFormatHelper.M === 0){
+                        patt = /[1-9]/
+                    }  else {
+                        patt = /[0-2]/
+                    }
+                    return patt.test(char)
+                },
+            },
+            'Y': {
+                validate: (char) => {
+                    const patt = /[0-9]/g
+                    return patt.test(char)
+                },
+            },
+            'y': {
+                validate: (char) => {
+                    const patt = /[0-9]/g
+                    return patt.test(char)
+                },
+            },
+        }}
         ref="input"
-        type="text"
         id={this.props.id}
         name={this.props.name}
-        value={this.state.maybeDate}
+        value={value}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         onChange={this.handleChange}
-        className={"ignore-react-onclickoutside " + this.props.className}
+        className={`ignore-react-onclickoutside ${this.props.className}`}
         disabled={this.props.disabled}
         placeholder={this.props.placeholderText}
         readOnly={this.props.readOnly}

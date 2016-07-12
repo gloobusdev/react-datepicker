@@ -45,6 +45,7 @@ var DatePicker = React.createClass({
 
   getInitialState() {
     return {
+      dateValid: true,
       focus: false,
       selected: this.props.selected
     };
@@ -99,7 +100,20 @@ var DatePicker = React.createClass({
   },
 
   handleSelect(date) {
-    this.setSelected(date);
+    const {minDate, maxDate} = this.props
+    let valid = false
+    if (date.isValid()) {
+        if (minDate && date.isBefore(minDate)) {
+            // if it's before min date
+        } else if (maxDate && date.isAfter(maxDate)) {
+            // if it's after max date
+        } else {
+            valid = true
+            this.setSelected(date);
+        }
+    }
+
+    this.setState({dateValid: valid})
 
     setTimeout(() => {
       this.hideCalendar();
@@ -187,7 +201,7 @@ var DatePicker = React.createClass({
         <a className="close-icon" href="#" onClick={this.onClearClick}></a>
       );
     }
-
+    const {dateValid} = this.state
     return (
       <div className="datepicker__input-container">
         <DateInput
@@ -196,6 +210,8 @@ var DatePicker = React.createClass({
           name={this.props.name}
           date={this.state.selected}
           dateFormat={this.props.dateFormat}
+          minDate={this.props.minDate}
+          maxDate={this.props.maxDate}
           focus={this.state.focus}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
@@ -210,6 +226,8 @@ var DatePicker = React.createClass({
           readOnly={this.props.readOnly}
           required={this.props.required}
           tabIndex={this.props.tabIndex}
+          onValidity={(status) => this.setState({dateValid: status})}
+          isValid={dateValid}
           isTypeable={this.props.isTypeable} />
         {clearButton}
         {this.props.disabled ? null : this.calendar()}
