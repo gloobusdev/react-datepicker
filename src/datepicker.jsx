@@ -102,22 +102,16 @@ var DatePicker = React.createClass({
   handleSelect(date) {
     const {minDate, maxDate} = this.props
     let valid = false
-    if (date.isValid()) {
-        if (minDate && date.isBefore(minDate)) {
-            // if it's before min date
-        } else if (maxDate && date.isAfter(maxDate)) {
-            // if it's after max date
-        } else {
+    if (
+        date.isValid() &&
+        (minDate ? date.isAfter(minDate) : true) &&
+        (maxDate ? date.isBefore(maxDate) : true)
+    ) {
             valid = true
             this.setSelected(date);
-        }
     }
 
     this.setState({dateValid: valid})
-
-    setTimeout(() => {
-      this.hideCalendar();
-    }, 200);
   },
 
   setSelected(date) {
@@ -137,13 +131,10 @@ var DatePicker = React.createClass({
     var previousFocusState = this.state.focus;
 
     this.setState({
-      focus: (event.target === ReactDOM.findDOMNode(this.refs.input) ? !this.state.focus : true),
+      focus: true,
       datePickerHasFocus: this.doesDatePickerContainElement(event.target)
     }, () => {
       this.forceUpdate();
-      if (previousFocusState && !this.state.datePickerHasFocus) {
-        this.hideCalendar();
-      }
     });
   },
 
@@ -210,14 +201,11 @@ var DatePicker = React.createClass({
           name={this.props.name}
           date={this.state.selected}
           dateFormat={this.props.dateFormat}
-          minDate={this.props.minDate}
-          maxDate={this.props.maxDate}
           focus={this.state.focus}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           handleClick={this.onInputClick}
           handleEnter={this.hideCalendar}
-          setSelected={this.setSelected}
           invalidateSelected={this.invalidateSelected}
           placeholderText={this.props.placeholderText}
           disabled={this.props.disabled}
@@ -226,7 +214,7 @@ var DatePicker = React.createClass({
           readOnly={this.props.readOnly}
           required={this.props.required}
           tabIndex={this.props.tabIndex}
-          onValidity={(status) => this.setState({dateValid: status})}
+          handleChange={this.handleSelect}
           isValid={dateValid}
           isTypeable={this.props.isTypeable} />
         {clearButton}

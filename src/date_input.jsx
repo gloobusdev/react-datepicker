@@ -2,7 +2,6 @@ import moment from "moment";
 import ReactDOM from "react-dom";
 import React from "react";
 import MaskedInput from "react-maskedinput";
-import InputMask from "inputmask-core";
 var DateInput = React.createClass({
 
   getDefaultProps() {
@@ -57,26 +56,13 @@ var DateInput = React.createClass({
   handleChange(event) {
     var value = event.target.value;
     var date = moment(value, this.props.dateFormat, true);
-    const {minDate, maxDate, onValidity, setSelected, invalidateSelected} = this.props
-
+    const {handleChange} = this.props
     this.setState({
         maybeDate: value
     });
 
-    let valid = false
-    if (date.isValid()) {
-        if (minDate && date.isBefore(minDate)) {
-            // if it's before min date
-        }else if (maxDate && date.isAfter(maxDate)) {
-            // if it's after max date
-        } else {
-            valid = true
-            setSelected(date)
-        }
-    } else {
-        (value && value.replace(/[^0-9]/g,"").length === 8) ? (valid = false) : (valid = true)
-    }
-    onValidity(valid)
+    handleChange(date)
+
   },
 
   safeDateFormat(date) {
@@ -103,14 +89,19 @@ var DateInput = React.createClass({
   },
 
   render() {
-    const {focus, date} = this.props
-    const value = focus ? this.state.maybeDate : date && moment(date).format(this.props.dateFormat)
-    console.log('DATE', date)
-    console.log('MAYBE', this.state.maybeDate)
+    const {focus, date, isValid} = this.props
+    const {maybeDate} = this.state
+    const chosenDate = date && moment(date).format(this.props.dateFormat)
+    const value = maybeDate || chosenDate
+    const isTyping = value && value.replace(/[^0-9]/g,"").length < 8
     const dateFormatHelper = {}
+    const unfocusedColor = (isValid && !isTyping) ? undefined : 'red'
+    const focusedColor = (isValid || isTyping) ? undefined : 'red'
+    const focusState = focus ? focusedColor : unfocusedColor
+    const color = value ? focusState : undefined
     const dateFormat = this.props.dateFormat.replace(/dd/i, "Dd").replace(/mm/i, "Mm").replace(/yyyy/i, "Yyyy")
     return <MaskedInput
-        style={{'color': this.props.isValid ? undefined : 'red'}}
+        style={{color}}
         mask={dateFormat}
         formatCharacters={{
             'D': {
@@ -171,7 +162,7 @@ var DateInput = React.createClass({
         ref="input"
         id={this.props.id}
         name={this.props.name}
-        value={value}
+        value={value || ''}
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         onFocus={this.props.onFocus}
