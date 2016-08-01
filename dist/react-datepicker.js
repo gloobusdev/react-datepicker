@@ -7,7 +7,7 @@
 		exports["DatePicker"] = factory(require("moment"), require("react-dom"), require("react"), require("react-onclickoutside"), require("tether"));
 	else
 		root["DatePicker"] = factory(root["moment"], root["ReactDOM"], root["React"], root["OnClickOutside"], root["Tether"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_63__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_45__, __WEBPACK_EXTERNAL_MODULE_75__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -68,11 +68,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _date_input2 = _interopRequireDefault(_date_input);
 
-	var _calendar = __webpack_require__(30);
+	var _calendar = __webpack_require__(42);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _popover = __webpack_require__(62);
+	var _popover = __webpack_require__(74);
 
 	var _popover2 = _interopRequireDefault(_popover);
 
@@ -88,6 +88,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var DatePicker = _react2.default.createClass({
 	  displayName: "DatePicker",
+
 
 	  propTypes: {
 	    weekdays: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.string),
@@ -127,6 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 	  getInitialState: function getInitialState() {
 	    return {
+	      dateValid: true,
 	      focus: false,
 	      selected: this.props.selected
 	    };
@@ -183,21 +185,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return datePicker.contains(element);
 	  },
 	  handleSelect: function handleSelect(date) {
-	    var _this4 = this;
+	    var _props = this.props;
+	    var minDate = _props.minDate;
+	    var maxDate = _props.maxDate;
 
-	    this.setSelected(date);
+	    var valid = false;
+	    if (date.isValid() && (minDate ? date.isAfter(minDate) : true) && (maxDate ? date.isBefore(maxDate) : true)) {
+	      valid = true;
+	      this.setSelected(date);
+	    }
 
-	    setTimeout(function () {
-	      _this4.hideCalendar();
-	    }, 200);
+	    this.setState({ dateValid: valid });
 	  },
 	  setSelected: function setSelected(date) {
-	    var _this5 = this;
+	    var _this4 = this;
 
 	    this.setState({
 	      selected: date
 	    }, function () {
-	      _this5.props.onChange(_this5.state.selected);
+	      _this4.props.onChange(_this4.state.selected);
 	    });
 	  },
 	  invalidateSelected: function invalidateSelected() {
@@ -205,22 +211,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.props.onChange(null);
 	  },
 	  onInputClick: function onInputClick(event) {
-	    var _this6 = this;
+	    var _this5 = this;
 
 	    var previousFocusState = this.state.focus;
 
 	    this.setState({
-	      focus: event.target === _reactDom2.default.findDOMNode(this.refs.input) ? !this.state.focus : true,
+	      focus: true,
 	      datePickerHasFocus: this.doesDatePickerContainElement(event.target)
 	    }, function () {
-	      _this6.forceUpdate();
-	      if (previousFocusState && !_this6.state.datePickerHasFocus) {
-	        _this6.hideCalendar();
-	      }
+	      _this5.forceUpdate();
 	    });
 	  },
 	  onClearClick: function onClearClick(event) {
-	    var _this7 = this;
+	    var _this6 = this;
 
 	    event.preventDefault();
 
@@ -230,8 +233,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({
 	      selected: null
 	    }, function () {
-	      _this7.props.onClear();
-	      _this7.props.onChange(null);
+	      _this6.props.onClear();
+	      _this6.props.onChange(null);
 	    });
 	  },
 	  calendar: function calendar() {
@@ -270,6 +273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.props.isClearable && this.state.selected != null) {
 	      clearButton = _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.onClearClick });
 	    }
+	    var dateValid = this.state.dateValid;
 
 	    return _react2.default.createElement(
 	      "div",
@@ -285,7 +289,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        onBlur: this.handleBlur,
 	        handleClick: this.onInputClick,
 	        handleEnter: this.hideCalendar,
-	        setSelected: this.setSelected,
 	        invalidateSelected: this.invalidateSelected,
 	        placeholderText: this.props.placeholderText,
 	        disabled: this.props.disabled,
@@ -294,6 +297,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        readOnly: this.props.readOnly,
 	        required: this.props.required,
 	        tabIndex: this.props.tabIndex,
+	        handleChange: this.handleSelect,
+	        isValid: dateValid,
 	        isTypeable: this.props.isTypeable }),
 	      clearButton,
 	      this.props.disabled ? null : this.calendar()
@@ -1437,107 +1442,180 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactMaskedinput = __webpack_require__(30);
+
+	var _reactMaskedinput2 = _interopRequireDefault(_reactMaskedinput);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DateInput = _react2.default.createClass({
-	  displayName: "DateInput",
-	  getDefaultProps: function getDefaultProps() {
-	    return {
-	      dateFormat: "YYYY-MM-DD",
-	      className: "datepicker__input",
-	      onBlur: function onBlur() {}
-	    };
-	  },
-	  componentWillMount: function componentWillMount() {
-	    this.setState({
-	      maybeDate: this.safeDateFormat(this.props.date)
-	    });
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.toggleFocus(this.props.focus);
-	  },
-	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	    this.toggleFocus(newProps.focus);
+	    displayName: "DateInput",
+	    getDefaultProps: function getDefaultProps() {
+	        return {
+	            dateFormat: "YYYY-MM-DD",
+	            className: "datepicker__input",
+	            onBlur: function onBlur() {}
+	        };
+	    },
+	    componentWillMount: function componentWillMount() {
+	        this.setState({
+	            maybeDate: this.safeDateFormat(this.props.date)
+	        });
+	    },
+	    componentDidMount: function componentDidMount() {
+	        this.toggleFocus(this.props.focus);
+	    },
+	    componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	        this.toggleFocus(newProps.focus);
 
-	    // It checks that user is typing some date and
-	    // we should skipp updating because it would clear date input.
-	    // In particular, it checks that we pass the typeable flag in datepicker props
-	    // and that input has focus
-	    // and that new date is null (when input date is invalid the "this.props.invalidateSelected()"
-	    // method sets state as null).
-	    // The main disadvantage of this approach is that it is imposible to clear date
-	    // while the input has focus.
-	    var doesUserType = newProps.isTypeable && newProps.focus && !newProps.date;
+	        // It checks that user is typing some date and
+	        // we should skipp updating because it would clear date input.
+	        // In particular, it checks that we pass the typeable flag in datepicker props
+	        // and that input has focus
+	        // and that new date is null (when input date is invalid the "this.props.invalidateSelected()"
+	        // method sets state as null).
+	        // The main disadvantage of this approach is that it is imposible to clear date
+	        // while the input has focus.
+	        var doesUserType = newProps.isTypeable && newProps.focus && !newProps.date;
 
-	    // If we're receiving a different date then apply it.
-	    // If we're receiving a null date continue displaying the
-	    // value currently in the textbox.
-	    if (newProps.date != this.props.date && !doesUserType) {
-	      this.setState({
-	        maybeDate: this.safeDateFormat(newProps.date)
-	      });
-	    }
-	  },
-	  toggleFocus: function toggleFocus(focus) {
-	    if (focus) {
-	      this.refs.input.focus();
-	    } else {
-	      this.refs.input.blur();
-	    }
-	  },
-	  handleChange: function handleChange(event) {
-	    var value = event.target.value;
-	    var date = (0, _moment2.default)(value, this.props.dateFormat, true);
+	        // If we're receiving a different date then apply it.
+	        // If we're receiving a null date continue displaying the
+	        // value currently in the textbox.
+	        if (newProps.date != this.props.date && !doesUserType) {
+	            this.setState({
+	                maybeDate: this.safeDateFormat(newProps.date)
+	            });
+	        }
+	    },
+	    toggleFocus: function toggleFocus(focus) {
+	        if (focus) {
+	            this.refs.input.focus();
+	        } else {
+	            this.refs.input.blur();
+	        }
+	    },
+	    handleChange: function handleChange(event) {
+	        var value = event.target.value;
+	        var date = (0, _moment2.default)(value, this.props.dateFormat, true);
+	        var handleChange = this.props.handleChange;
 
-	    if (date.isValid()) {
-	      this.props.setSelected(date);
-	    } else {
-	      this.props.invalidateSelected();
-	    }
+	        this.setState({
+	            maybeDate: value
+	        });
 
-	    this.setState({
-	      maybeDate: value
-	    });
-	  },
-	  safeDateFormat: function safeDateFormat(date) {
-	    return !!date ? date.format(this.props.dateFormat) : null;
-	  },
-	  handleKeyDown: function handleKeyDown(event) {
-	    switch (event.key) {
-	      case "Enter":
-	        event.preventDefault();
-	        this.props.handleEnter();
-	        break;
-	      case "Escape":
-	        event.preventDefault();
-	        this.props.hideCalendar();
-	        break;
+	        handleChange(date);
+	    },
+	    safeDateFormat: function safeDateFormat(date) {
+	        return !!date ? date.format(this.props.dateFormat) : null;
+	    },
+	    handleKeyDown: function handleKeyDown(event) {
+	        switch (event.key) {
+	            case "Enter":
+	                event.preventDefault();
+	                this.props.handleEnter();
+	                break;
+	            case "Escape":
+	                event.preventDefault();
+	                this.props.hideCalendar();
+	                break;
+	        }
+	    },
+	    handleClick: function handleClick(event) {
+	        if (!this.props.disabled) {
+	            this.props.handleClick(event);
+	        }
+	    },
+	    render: function render() {
+	        var _props = this.props;
+	        var focus = _props.focus;
+	        var date = _props.date;
+	        var isValid = _props.isValid;
+	        var maybeDate = this.state.maybeDate;
+
+	        var chosenDate = date && (0, _moment2.default)(date).format(this.props.dateFormat);
+	        var value = maybeDate || chosenDate;
+	        var isTyping = value && value.replace(/[^0-9]/g, "").length < 8;
+	        var dateFormatHelper = {};
+	        var unfocusedColor = isValid && !isTyping ? undefined : 'red';
+	        var focusedColor = isValid || isTyping ? undefined : 'red';
+	        var focusState = focus ? focusedColor : unfocusedColor;
+	        var color = value ? focusState : undefined;
+	        var dateFormat = this.props.dateFormat.replace(/dd/i, "Dd").replace(/mm/i, "Mm").replace(/yyyy/i, "Yyyy");
+	        return _react2.default.createElement(_reactMaskedinput2.default, {
+	            style: { color: color },
+	            mask: dateFormat,
+	            formatCharacters: {
+	                'D': {
+	                    validate: function validate(char) {
+	                        var patt = /[0-3]/;
+	                        if (patt.test(char)) {
+	                            dateFormatHelper['D'] = parseInt(char);
+	                            return true;
+	                        }
+	                    }
+	                },
+	                'd': {
+	                    validate: function validate(char) {
+	                        var patt = false;
+	                        if (dateFormatHelper.D === 0) {
+	                            patt = /[1-9]/;
+	                        } else if (dateFormatHelper.D < 3) {
+	                            patt = /[0-9]/;
+	                        } else {
+	                            patt = /[0-1]/;
+	                        }
+	                        return patt.test(char);
+	                    }
+	                },
+	                'M': {
+	                    validate: function validate(char) {
+	                        var patt = /[0-1]/;
+	                        if (patt.test(char)) {
+	                            dateFormatHelper['M'] = parseInt(char);
+	                            return true;
+	                        }
+	                    }
+	                },
+	                'm': {
+	                    validate: function validate(char) {
+	                        var patt = false;
+	                        if (dateFormatHelper.M === 0) {
+	                            patt = /[1-9]/;
+	                        } else {
+	                            patt = /[0-2]/;
+	                        }
+	                        return patt.test(char);
+	                    }
+	                },
+	                'Y': {
+	                    validate: function validate(char) {
+	                        var patt = /[0-9]/g;
+	                        return patt.test(char);
+	                    }
+	                },
+	                'y': {
+	                    validate: function validate(char) {
+	                        var patt = /[0-9]/g;
+	                        return patt.test(char);
+	                    }
+	                }
+	            },
+	            ref: "input",
+	            id: this.props.id,
+	            name: this.props.name,
+	            value: value || '',
+	            onClick: this.handleClick,
+	            onKeyDown: this.handleKeyDown,
+	            onFocus: this.props.onFocus,
+	            onBlur: this.props.onBlur,
+	            onChange: this.handleChange,
+	            className: "ignore-react-onclickoutside " + this.props.className,
+	            disabled: this.props.disabled,
+	            placeholder: this.props.placeholderText,
+	            readOnly: this.props.readOnly,
+	            required: this.props.required,
+	            tabIndex: this.props.tabIndex });
 	    }
-	  },
-	  handleClick: function handleClick(event) {
-	    if (!this.props.disabled) {
-	      this.props.handleClick(event);
-	    }
-	  },
-	  render: function render() {
-	    return _react2.default.createElement("input", {
-	      ref: "input",
-	      type: "text",
-	      id: this.props.id,
-	      name: this.props.name,
-	      value: this.state.maybeDate,
-	      onClick: this.handleClick,
-	      onKeyDown: this.handleKeyDown,
-	      onFocus: this.props.onFocus,
-	      onBlur: this.props.onBlur,
-	      onChange: this.handleChange,
-	      className: "ignore-react-onclickoutside " + this.props.className,
-	      disabled: this.props.disabled,
-	      placeholder: this.props.placeholderText,
-	      readOnly: this.props.readOnly,
-	      required: this.props.required,
-	      tabIndex: this.props.tabIndex });
-	  }
 	});
 
 	module.exports = DateInput;
@@ -1558,13 +1636,1433 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	var React = __webpack_require__(29);
+
+	var _require = __webpack_require__(31);
+
+	var getSelection = _require.getSelection;
+	var setSelection = _require.setSelection;
+
+	var InputMask = __webpack_require__(41);
+
+	var KEYCODE_Z = 90;
+	var KEYCODE_Y = 89;
+
+	function isUndo(e) {
+	  return (e.ctrlKey || e.metaKey) && e.keyCode === (e.shiftKey ? KEYCODE_Y : KEYCODE_Z);
+	}
+
+	function isRedo(e) {
+	  return (e.ctrlKey || e.metaKey) && e.keyCode === (e.shiftKey ? KEYCODE_Z : KEYCODE_Y);
+	}
+
+	var MaskedInput = React.createClass({
+	  displayName: 'MaskedInput',
+
+	  propTypes: {
+	    mask: React.PropTypes.string.isRequired,
+
+	    formatCharacters: React.PropTypes.object,
+	    placeholderChar: React.PropTypes.string
+	  },
+
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      value: ''
+	    };
+	  },
+
+	  componentWillMount: function componentWillMount() {
+	    var options = {
+	      pattern: this.props.mask,
+	      value: this.props.value,
+	      formatCharacters: this.props.formatCharacters
+	    };
+	    if (this.props.placeholderChar) {
+	      options.placeholderChar = this.props.placeholderChar;
+	    }
+	    this.mask = new InputMask(options);
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    // update the pattern first to avoid left over placeholders
+	    if (this.props.mask !== nextProps.mask) {
+	      this.mask.setPattern(nextProps.mask, { value: this.mask.getRawValue() });
+	    }
+	    if (this.props.value !== nextProps.value) {
+	      this.mask.setValue(nextProps.value);
+	    }
+	  },
+
+	  componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+	    if (nextProps.mask !== this.props.mask) {
+	      this._updatePattern(nextProps);
+	    }
+	  },
+
+	  componentDidUpdate: function componentDidUpdate(prevProps) {
+	    if (prevProps.mask !== this.props.mask && this.mask.selection.start) {
+	      this._updateInputSelection();
+	    }
+	  },
+
+	  _updatePattern: function _updatePattern(props) {
+	    this.mask.setPattern(props.mask, {
+	      value: this.mask.getRawValue(),
+	      selection: getSelection(this.input)
+	    });
+	  },
+
+	  _updateMaskSelection: function _updateMaskSelection() {
+	    this.mask.selection = getSelection(this.input);
+	  },
+
+	  _updateInputSelection: function _updateInputSelection() {
+	    setSelection(this.input, this.mask.selection);
+	  },
+
+	  _onChange: function _onChange(e) {
+	    // console.log('onChange', JSON.stringify(getSelection(this.input)), e.target.value)
+
+	    var maskValue = this.mask.getValue();
+	    if (e.target.value !== maskValue) {
+	      // Cut or delete operations will have shortened the value
+	      if (e.target.value.length < maskValue.length) {
+	        var sizeDiff = maskValue.length - e.target.value.length;
+	        this._updateMaskSelection();
+	        this.mask.selection.end = this.mask.selection.start + sizeDiff;
+	        this.mask.backspace();
+	      }
+	      var value = this._getDisplayValue();
+	      e.target.value = value;
+	      if (value) {
+	        this._updateInputSelection();
+	      }
+	    }
+	    if (this.props.onChange) {
+	      this.props.onChange(e);
+	    }
+	  },
+
+	  _onKeyDown: function _onKeyDown(e) {
+	    // console.log('onKeyDown', JSON.stringify(getSelection(this.input)), e.key, e.target.value)
+
+	    if (isUndo(e)) {
+	      e.preventDefault();
+	      if (this.mask.undo()) {
+	        e.target.value = this._getDisplayValue();
+	        this._updateInputSelection();
+	        if (this.props.onChange) {
+	          this.props.onChange(e);
+	        }
+	      }
+	      return;
+	    } else if (isRedo(e)) {
+	      e.preventDefault();
+	      if (this.mask.redo()) {
+	        e.target.value = this._getDisplayValue();
+	        this._updateInputSelection();
+	        if (this.props.onChange) {
+	          this.props.onChange(e);
+	        }
+	      }
+	      return;
+	    }
+
+	    if (e.key === 'Backspace') {
+	      e.preventDefault();
+	      this._updateMaskSelection();
+	      if (this.mask.backspace()) {
+	        var value = this._getDisplayValue();
+	        e.target.value = value;
+	        if (value) {
+	          this._updateInputSelection();
+	        }
+	        if (this.props.onChange) {
+	          this.props.onChange(e);
+	        }
+	      }
+	    }
+	  },
+
+	  _onKeyPress: function _onKeyPress(e) {
+	    // console.log('onKeyPress', JSON.stringify(getSelection(this.input)), e.key, e.target.value)
+
+	    // Ignore modified key presses
+	    // Ignore enter key to allow form submission
+	    if (e.metaKey || e.altKey || e.ctrlKey || e.key === 'Enter') {
+	      return;
+	    }
+
+	    e.preventDefault();
+	    this._updateMaskSelection();
+	    if (this.mask.input(e.key)) {
+	      e.target.value = this.mask.getValue();
+	      this._updateInputSelection();
+	      if (this.props.onChange) {
+	        this.props.onChange(e);
+	      }
+	    }
+	  },
+
+	  _onPaste: function _onPaste(e) {
+	    // console.log('onPaste', JSON.stringify(getSelection(this.input)), e.clipboardData.getData('Text'), e.target.value)
+
+	    e.preventDefault();
+	    this._updateMaskSelection();
+	    // getData value needed for IE also works in FF & Chrome
+	    if (this.mask.paste(e.clipboardData.getData('Text'))) {
+	      e.target.value = this.mask.getValue();
+	      // Timeout needed for IE
+	      setTimeout(this._updateInputSelection, 0);
+	      if (this.props.onChange) {
+	        this.props.onChange(e);
+	      }
+	    }
+	  },
+
+	  _getDisplayValue: function _getDisplayValue() {
+	    var value = this.mask.getValue();
+	    return value === this.mask.emptyValue ? '' : value;
+	  },
+
+	  focus: function focus() {
+	    this.input.focus();
+	  },
+
+	  blur: function blur() {
+	    this.input.blur();
+	  },
+
+	  render: function render() {
+	    var _this = this;
+
+	    var _props = this.props;
+	    var mask = _props.mask;
+	    var formatCharacters = _props.formatCharacters;
+	    var size = _props.size;
+	    var placeholder = _props.placeholder;
+	    var placeholderChar = _props.placeholderChar;
+
+	    var props = _objectWithoutProperties(_props, ['mask', 'formatCharacters', 'size', 'placeholder', 'placeholderChar']);
+
+	    var patternLength = this.mask.pattern.length;
+	    return React.createElement('input', _extends({}, props, {
+	      ref: function (r) {
+	        return _this.input = r;
+	      },
+	      maxLength: patternLength,
+	      onChange: this._onChange,
+	      onKeyDown: this._onKeyDown,
+	      onKeyPress: this._onKeyPress,
+	      onPaste: this._onPaste,
+	      placeholder: placeholder || this.mask.emptyValue,
+	      size: size || patternLength,
+	      value: this._getDisplayValue()
+	    }));
+	  }
+	});
+
+	module.exports = MaskedInput;
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactInputSelection
+	 */
+
+	'use strict';
+
+	var ReactDOMSelection = __webpack_require__(32);
+
+	var containsNode = __webpack_require__(36);
+	var focusNode = __webpack_require__(39);
+	var getActiveElement = __webpack_require__(40);
+
+	function isInDocument(node) {
+	  return containsNode(document.documentElement, node);
+	}
+
+	/**
+	 * @ReactInputSelection: React input selection module. Based on Selection.js,
+	 * but modified to be suitable for react and has a couple of bug fixes (doesn't
+	 * assume buttons have range selections allowed).
+	 * Input selection module for React.
+	 */
+	var ReactInputSelection = {
+
+	  hasSelectionCapabilities: function (elem) {
+	    var nodeName = elem && elem.nodeName && elem.nodeName.toLowerCase();
+	    return nodeName && (nodeName === 'input' && elem.type === 'text' || nodeName === 'textarea' || elem.contentEditable === 'true');
+	  },
+
+	  getSelectionInformation: function () {
+	    var focusedElem = getActiveElement();
+	    return {
+	      focusedElem: focusedElem,
+	      selectionRange: ReactInputSelection.hasSelectionCapabilities(focusedElem) ? ReactInputSelection.getSelection(focusedElem) : null
+	    };
+	  },
+
+	  /**
+	   * @restoreSelection: If any selection information was potentially lost,
+	   * restore it. This is useful when performing operations that could remove dom
+	   * nodes and place them back in, resulting in focus being lost.
+	   */
+	  restoreSelection: function (priorSelectionInformation) {
+	    var curFocusedElem = getActiveElement();
+	    var priorFocusedElem = priorSelectionInformation.focusedElem;
+	    var priorSelectionRange = priorSelectionInformation.selectionRange;
+	    if (curFocusedElem !== priorFocusedElem && isInDocument(priorFocusedElem)) {
+	      if (ReactInputSelection.hasSelectionCapabilities(priorFocusedElem)) {
+	        ReactInputSelection.setSelection(priorFocusedElem, priorSelectionRange);
+	      }
+	      focusNode(priorFocusedElem);
+	    }
+	  },
+
+	  /**
+	   * @getSelection: Gets the selection bounds of a focused textarea, input or
+	   * contentEditable node.
+	   * -@input: Look up selection bounds of this input
+	   * -@return {start: selectionStart, end: selectionEnd}
+	   */
+	  getSelection: function (input) {
+	    var selection;
+
+	    if ('selectionStart' in input) {
+	      // Modern browser with input or textarea.
+	      selection = {
+	        start: input.selectionStart,
+	        end: input.selectionEnd
+	      };
+	    } else if (document.selection && input.nodeName && input.nodeName.toLowerCase() === 'input') {
+	      // IE8 input.
+	      var range = document.selection.createRange();
+	      // There can only be one selection per document in IE, so it must
+	      // be in our element.
+	      if (range.parentElement() === input) {
+	        selection = {
+	          start: -range.moveStart('character', -input.value.length),
+	          end: -range.moveEnd('character', -input.value.length)
+	        };
+	      }
+	    } else {
+	      // Content editable or old IE textarea.
+	      selection = ReactDOMSelection.getOffsets(input);
+	    }
+
+	    return selection || { start: 0, end: 0 };
+	  },
+
+	  /**
+	   * @setSelection: Sets the selection bounds of a textarea or input and focuses
+	   * the input.
+	   * -@input     Set selection bounds of this input or textarea
+	   * -@offsets   Object of same form that is returned from get*
+	   */
+	  setSelection: function (input, offsets) {
+	    var start = offsets.start;
+	    var end = offsets.end;
+	    if (end === undefined) {
+	      end = start;
+	    }
+
+	    if ('selectionStart' in input) {
+	      input.selectionStart = start;
+	      input.selectionEnd = Math.min(end, input.value.length);
+	    } else if (document.selection && input.nodeName && input.nodeName.toLowerCase() === 'input') {
+	      var range = input.createTextRange();
+	      range.collapse(true);
+	      range.moveStart('character', start);
+	      range.moveEnd('character', end - start);
+	      range.select();
+	    } else {
+	      ReactDOMSelection.setOffsets(input, offsets);
+	    }
+	  }
+	};
+
+	module.exports = ReactInputSelection;
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactDOMSelection
+	 */
+
+	'use strict';
+
+	var ExecutionEnvironment = __webpack_require__(33);
+
+	var getNodeForCharacterOffset = __webpack_require__(34);
+	var getTextContentAccessor = __webpack_require__(35);
+
+	/**
+	 * While `isCollapsed` is available on the Selection object and `collapsed`
+	 * is available on the Range object, IE11 sometimes gets them wrong.
+	 * If the anchor/focus nodes and offsets are the same, the range is collapsed.
+	 */
+	function isCollapsed(anchorNode, anchorOffset, focusNode, focusOffset) {
+	  return anchorNode === focusNode && anchorOffset === focusOffset;
+	}
+
+	/**
+	 * Get the appropriate anchor and focus node/offset pairs for IE.
+	 *
+	 * The catch here is that IE's selection API doesn't provide information
+	 * about whether the selection is forward or backward, so we have to
+	 * behave as though it's always forward.
+	 *
+	 * IE text differs from modern selection in that it behaves as though
+	 * block elements end with a new line. This means character offsets will
+	 * differ between the two APIs.
+	 *
+	 * @param {DOMElement} node
+	 * @return {object}
+	 */
+	function getIEOffsets(node) {
+	  var selection = document.selection;
+	  var selectedRange = selection.createRange();
+	  var selectedLength = selectedRange.text.length;
+
+	  // Duplicate selection so we can move range without breaking user selection.
+	  var fromStart = selectedRange.duplicate();
+	  fromStart.moveToElementText(node);
+	  fromStart.setEndPoint('EndToStart', selectedRange);
+
+	  var startOffset = fromStart.text.length;
+	  var endOffset = startOffset + selectedLength;
+
+	  return {
+	    start: startOffset,
+	    end: endOffset
+	  };
+	}
+
+	/**
+	 * @param {DOMElement} node
+	 * @return {?object}
+	 */
+	function getModernOffsets(node) {
+	  var selection = window.getSelection && window.getSelection();
+
+	  if (!selection || selection.rangeCount === 0) {
+	    return null;
+	  }
+
+	  var anchorNode = selection.anchorNode;
+	  var anchorOffset = selection.anchorOffset;
+	  var focusNode = selection.focusNode;
+	  var focusOffset = selection.focusOffset;
+
+	  var currentRange = selection.getRangeAt(0);
+
+	  // In Firefox, range.startContainer and range.endContainer can be "anonymous
+	  // divs", e.g. the up/down buttons on an <input type="number">. Anonymous
+	  // divs do not seem to expose properties, triggering a "Permission denied
+	  // error" if any of its properties are accessed. The only seemingly possible
+	  // way to avoid erroring is to access a property that typically works for
+	  // non-anonymous divs and catch any error that may otherwise arise. See
+	  // https://bugzilla.mozilla.org/show_bug.cgi?id=208427
+	  try {
+	    /* eslint-disable no-unused-expressions */
+	    currentRange.startContainer.nodeType;
+	    currentRange.endContainer.nodeType;
+	    /* eslint-enable no-unused-expressions */
+	  } catch (e) {
+	    return null;
+	  }
+
+	  // If the node and offset values are the same, the selection is collapsed.
+	  // `Selection.isCollapsed` is available natively, but IE sometimes gets
+	  // this value wrong.
+	  var isSelectionCollapsed = isCollapsed(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset);
+
+	  var rangeLength = isSelectionCollapsed ? 0 : currentRange.toString().length;
+
+	  var tempRange = currentRange.cloneRange();
+	  tempRange.selectNodeContents(node);
+	  tempRange.setEnd(currentRange.startContainer, currentRange.startOffset);
+
+	  var isTempRangeCollapsed = isCollapsed(tempRange.startContainer, tempRange.startOffset, tempRange.endContainer, tempRange.endOffset);
+
+	  var start = isTempRangeCollapsed ? 0 : tempRange.toString().length;
+	  var end = start + rangeLength;
+
+	  // Detect whether the selection is backward.
+	  var detectionRange = document.createRange();
+	  detectionRange.setStart(anchorNode, anchorOffset);
+	  detectionRange.setEnd(focusNode, focusOffset);
+	  var isBackward = detectionRange.collapsed;
+
+	  return {
+	    start: isBackward ? end : start,
+	    end: isBackward ? start : end
+	  };
+	}
+
+	/**
+	 * @param {DOMElement|DOMTextNode} node
+	 * @param {object} offsets
+	 */
+	function setIEOffsets(node, offsets) {
+	  var range = document.selection.createRange().duplicate();
+	  var start, end;
+
+	  if (offsets.end === undefined) {
+	    start = offsets.start;
+	    end = start;
+	  } else if (offsets.start > offsets.end) {
+	    start = offsets.end;
+	    end = offsets.start;
+	  } else {
+	    start = offsets.start;
+	    end = offsets.end;
+	  }
+
+	  range.moveToElementText(node);
+	  range.moveStart('character', start);
+	  range.setEndPoint('EndToStart', range);
+	  range.moveEnd('character', end - start);
+	  range.select();
+	}
+
+	/**
+	 * In modern non-IE browsers, we can support both forward and backward
+	 * selections.
+	 *
+	 * Note: IE10+ supports the Selection object, but it does not support
+	 * the `extend` method, which means that even in modern IE, it's not possible
+	 * to programmatically create a backward selection. Thus, for all IE
+	 * versions, we use the old IE API to create our selections.
+	 *
+	 * @param {DOMElement|DOMTextNode} node
+	 * @param {object} offsets
+	 */
+	function setModernOffsets(node, offsets) {
+	  if (!window.getSelection) {
+	    return;
+	  }
+
+	  var selection = window.getSelection();
+	  var length = node[getTextContentAccessor()].length;
+	  var start = Math.min(offsets.start, length);
+	  var end = offsets.end === undefined ? start : Math.min(offsets.end, length);
+
+	  // IE 11 uses modern selection, but doesn't support the extend method.
+	  // Flip backward selections, so we can set with a single range.
+	  if (!selection.extend && start > end) {
+	    var temp = end;
+	    end = start;
+	    start = temp;
+	  }
+
+	  var startMarker = getNodeForCharacterOffset(node, start);
+	  var endMarker = getNodeForCharacterOffset(node, end);
+
+	  if (startMarker && endMarker) {
+	    var range = document.createRange();
+	    range.setStart(startMarker.node, startMarker.offset);
+	    selection.removeAllRanges();
+
+	    if (start > end) {
+	      selection.addRange(range);
+	      selection.extend(endMarker.node, endMarker.offset);
+	    } else {
+	      range.setEnd(endMarker.node, endMarker.offset);
+	      selection.addRange(range);
+	    }
+	  }
+	}
+
+	var useIEOffsets = ExecutionEnvironment.canUseDOM && 'selection' in document && !('getSelection' in window);
+
+	var ReactDOMSelection = {
+	  /**
+	   * @param {DOMElement} node
+	   */
+	  getOffsets: useIEOffsets ? getIEOffsets : getModernOffsets,
+
+	  /**
+	   * @param {DOMElement|DOMTextNode} node
+	   * @param {object} offsets
+	   */
+	  setOffsets: useIEOffsets ? setIEOffsets : setModernOffsets
+	};
+
+	module.exports = ReactDOMSelection;
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 */
+
+	'use strict';
+
+	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+	/**
+	 * Simple, lightweight module assisting with the detection and context of
+	 * Worker. Helps avoid circular dependencies and allows code to reason about
+	 * whether or not they are in a Worker, even if they never include the main
+	 * `ReactWorker` dependency.
+	 */
+	var ExecutionEnvironment = {
+
+	  canUseDOM: canUseDOM,
+
+	  canUseWorkers: typeof Worker !== 'undefined',
+
+	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
+
+	  canUseViewport: canUseDOM && !!window.screen,
+
+	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
+
+	};
+
+	module.exports = ExecutionEnvironment;
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule getNodeForCharacterOffset
+	 */
+
+	'use strict';
+
+	/**
+	 * Given any node return the first leaf node without children.
+	 *
+	 * @param {DOMElement|DOMTextNode} node
+	 * @return {DOMElement|DOMTextNode}
+	 */
+
+	function getLeafNode(node) {
+	  while (node && node.firstChild) {
+	    node = node.firstChild;
+	  }
+	  return node;
+	}
+
+	/**
+	 * Get the next sibling within a container. This will walk up the
+	 * DOM if a node's siblings have been exhausted.
+	 *
+	 * @param {DOMElement|DOMTextNode} node
+	 * @return {?DOMElement|DOMTextNode}
+	 */
+	function getSiblingNode(node) {
+	  while (node) {
+	    if (node.nextSibling) {
+	      return node.nextSibling;
+	    }
+	    node = node.parentNode;
+	  }
+	}
+
+	/**
+	 * Get object describing the nodes which contain characters at offset.
+	 *
+	 * @param {DOMElement|DOMTextNode} root
+	 * @param {number} offset
+	 * @return {?object}
+	 */
+	function getNodeForCharacterOffset(root, offset) {
+	  var node = getLeafNode(root);
+	  var nodeStart = 0;
+	  var nodeEnd = 0;
+
+	  while (node) {
+	    if (node.nodeType === 3) {
+	      nodeEnd = nodeStart + node.textContent.length;
+
+	      if (nodeStart <= offset && nodeEnd >= offset) {
+	        return {
+	          node: node,
+	          offset: offset - nodeStart
+	        };
+	      }
+
+	      nodeStart = nodeEnd;
+	    }
+
+	    node = getLeafNode(getSiblingNode(node));
+	  }
+	}
+
+	module.exports = getNodeForCharacterOffset;
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule getTextContentAccessor
+	 */
+
+	'use strict';
+
+	var ExecutionEnvironment = __webpack_require__(33);
+
+	var contentKey = null;
+
+	/**
+	 * Gets the key used to access text content on a DOM node.
+	 *
+	 * @return {?string} Key used to access text content.
+	 * @internal
+	 */
+	function getTextContentAccessor() {
+	  if (!contentKey && ExecutionEnvironment.canUseDOM) {
+	    // Prefer textContent to innerText because many browsers support both but
+	    // SVG <text> elements don't support innerText even when <div> does.
+	    contentKey = 'textContent' in document.documentElement ? 'textContent' : 'innerText';
+	  }
+	  return contentKey;
+	}
+
+	module.exports = getTextContentAccessor;
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * 
+	 */
+
+	var isTextNode = __webpack_require__(37);
+
+	/*eslint-disable no-bitwise */
+
+	/**
+	 * Checks if a given DOM node contains or is another DOM node.
+	 */
+	function containsNode(outerNode, innerNode) {
+	  if (!outerNode || !innerNode) {
+	    return false;
+	  } else if (outerNode === innerNode) {
+	    return true;
+	  } else if (isTextNode(outerNode)) {
+	    return false;
+	  } else if (isTextNode(innerNode)) {
+	    return containsNode(outerNode, innerNode.parentNode);
+	  } else if ('contains' in outerNode) {
+	    return outerNode.contains(innerNode);
+	  } else if (outerNode.compareDocumentPosition) {
+	    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
+	  } else {
+	    return false;
+	  }
+	}
+
+	module.exports = containsNode;
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @typechecks
+	 */
+
+	var isNode = __webpack_require__(38);
+
+	/**
+	 * @param {*} object The object to check.
+	 * @return {boolean} Whether or not the object is a DOM text node.
+	 */
+	function isTextNode(object) {
+	  return isNode(object) && object.nodeType == 3;
+	}
+
+	module.exports = isTextNode;
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @typechecks
+	 */
+
+	/**
+	 * @param {*} object The object to check.
+	 * @return {boolean} Whether or not the object is a DOM node.
+	 */
+	function isNode(object) {
+	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
+	}
+
+	module.exports = isNode;
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 */
+
+	'use strict';
+
+	/**
+	 * @param {DOMElement} node input/textarea to focus
+	 */
+
+	function focusNode(node) {
+	  // IE8 can throw "Can't move focus to the control because it is invisible,
+	  // not enabled, or of a type that does not accept the focus." for all kinds of
+	  // reasons that are too expensive and fragile to test.
+	  try {
+	    node.focus();
+	  } catch (e) {}
+	}
+
+	module.exports = focusNode;
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Copyright (c) 2013-present, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @typechecks
+	 */
+
+	/* eslint-disable fb-www/typeof-undefined */
+
+	/**
+	 * Same as document.activeElement but wraps in a try-catch block. In IE it is
+	 * not safe to call document.activeElement if there is nothing focused.
+	 *
+	 * The activeElement will be null only if the document or document body is not
+	 * yet defined.
+	 */
+	function getActiveElement() /*?DOMElement*/{
+	  if (typeof document === 'undefined') {
+	    return null;
+	  }
+	  try {
+	    return document.activeElement || document.body;
+	  } catch (e) {
+	    return document.body;
+	  }
+	}
+
+	module.exports = getActiveElement;
+
+/***/ },
+/* 41 */
+/***/ function(module, exports) {
+
+	'use strict'
+
+	function extend(dest, src) {
+	  if (src) {
+	    var props = Object.keys(src)
+	    for (var i = 0, l = props.length; i < l ; i++) {
+	      dest[props[i]] = src[props[i]]
+	    }
+	  }
+	  return dest
+	}
+
+	function copy(obj) {
+	  return extend({}, obj)
+	}
+
+	/**
+	 * Merge an object defining format characters into the defaults.
+	 * Passing null/undefined for en existing format character removes it.
+	 * Passing a definition for an existing format character overrides it.
+	 * @param {?Object} formatCharacters.
+	 */
+	function mergeFormatCharacters(formatCharacters) {
+	  var merged = copy(DEFAULT_FORMAT_CHARACTERS)
+	  if (formatCharacters) {
+	    var chars = Object.keys(formatCharacters)
+	    for (var i = 0, l = chars.length; i < l ; i++) {
+	      var char = chars[i]
+	      if (formatCharacters[char] == null) {
+	        delete merged[char]
+	      }
+	      else {
+	        merged[char] = formatCharacters[char]
+	      }
+	    }
+	  }
+	  return merged
+	}
+
+	var ESCAPE_CHAR = '\\'
+
+	var DIGIT_RE = /^\d$/
+	var LETTER_RE = /^[A-Za-z]$/
+	var ALPHANNUMERIC_RE = /^[\dA-Za-z]$/
+
+	var DEFAULT_PLACEHOLDER_CHAR = '_'
+	var DEFAULT_FORMAT_CHARACTERS = {
+	  '*': {
+	    validate: function(char) { return ALPHANNUMERIC_RE.test(char) }
+	  },
+	  '1': {
+	    validate: function(char) { return DIGIT_RE.test(char) }
+	  },
+	  'a': {
+	    validate: function(char) { return LETTER_RE.test(char) }
+	  },
+	  'A': {
+	    validate: function(char) { return LETTER_RE.test(char) },
+	    transform: function(char) { return char.toUpperCase() }
+	  },
+	  '#': {
+	    validate: function(char) { return ALPHANNUMERIC_RE.test(char) },
+	    transform: function(char) { return char.toUpperCase() }
+	  }
+	}
+
+	/**
+	 * @param {string} source
+	 * @patam {?Object} formatCharacters
+	 */
+	function Pattern(source, formatCharacters, placeholderChar) {
+	  if (!(this instanceof Pattern)) {
+	    return new Pattern(source, formatCharacters, placeholderChar)
+	  }
+
+	  /** Placeholder character */
+	  this.placeholderChar = placeholderChar || DEFAULT_PLACEHOLDER_CHAR
+	  /** Format character definitions. */
+	  this.formatCharacters = formatCharacters || DEFAULT_FORMAT_CHARACTERS
+	  /** Pattern definition string with escape characters. */
+	  this.source = source
+	  /** Pattern characters after escape characters have been processed. */
+	  this.pattern = []
+	  /** Length of the pattern after escape characters have been processed. */
+	  this.length = 0
+	  /** Index of the first editable character. */
+	  this.firstEditableIndex = null
+	  /** Index of the last editable character. */
+	  this.lastEditableIndex = null
+
+	  /** Lookup for indices of editable characters in the pattern. */
+	  this._editableIndices = {}
+
+	  this._parse()
+	}
+
+	Pattern.prototype._parse = function parse() {
+	  var sourceChars = this.source.split('')
+	  var patternIndex = 0
+	  var pattern = []
+
+	  for (var i = 0, l = sourceChars.length; i < l; i++) {
+	    var char = sourceChars[i]
+	    if (char === ESCAPE_CHAR) {
+	      if (i === l - 1) {
+	        throw new Error('InputMask: pattern ends with a raw ' + ESCAPE_CHAR)
+	      }
+	      char = sourceChars[++i]
+	    }
+	    else if (char in this.formatCharacters) {
+	      if (this.firstEditableIndex === null) {
+	        this.firstEditableIndex = patternIndex
+	      }
+	      this.lastEditableIndex = patternIndex
+	      this._editableIndices[patternIndex] = true
+	    }
+
+	    pattern.push(char)
+	    patternIndex++
+	  }
+
+	  if (this.firstEditableIndex === null) {
+	    throw new Error(
+	      'InputMask: pattern "' + this.source + '" does not contain any editable characters.'
+	    )
+	  }
+
+	  this.pattern = pattern
+	  this.length = pattern.length
+	}
+
+	/**
+	 * @param {Array<string>} value
+	 * @return {Array<string>}
+	 */
+	Pattern.prototype.formatValue = function format(value) {
+	  var valueBuffer = new Array(this.length)
+	  var valueIndex = 0
+
+	  for (var i = 0, l = this.length; i < l ; i++) {
+	    if (this.isEditableIndex(i)) {
+	      valueBuffer[i] = (value.length > valueIndex && this.isValidAtIndex(value[valueIndex], i)
+	                        ? this.transform(value[valueIndex], i)
+	                        : this.placeholderChar)
+	      valueIndex++
+	    }
+	    else {
+	      valueBuffer[i] = this.pattern[i]
+	      // Also allow the value to contain static values from the pattern by
+	      // advancing its index.
+	      if (value.length > valueIndex && value[valueIndex] === this.pattern[i]) {
+	        valueIndex++
+	      }
+	    }
+	  }
+
+	  return valueBuffer
+	}
+
+	/**
+	 * @param {number} index
+	 * @return {boolean}
+	 */
+	Pattern.prototype.isEditableIndex = function isEditableIndex(index) {
+	  return !!this._editableIndices[index]
+	}
+
+	/**
+	 * @param {string} char
+	 * @param {number} index
+	 * @return {boolean}
+	 */
+	Pattern.prototype.isValidAtIndex = function isValidAtIndex(char, index) {
+	  return this.formatCharacters[this.pattern[index]].validate(char)
+	}
+
+	Pattern.prototype.transform = function transform(char, index) {
+	  var format = this.formatCharacters[this.pattern[index]]
+	  return typeof format.transform == 'function' ? format.transform(char) : char
+	}
+
+	function InputMask(options) {
+	  if (!(this instanceof InputMask)) { return new InputMask(options) }
+
+	  options = extend({
+	    formatCharacters: null,
+	    pattern: null,
+	    placeholderChar: DEFAULT_PLACEHOLDER_CHAR,
+	    selection: {start: 0, end: 0},
+	    value: ''
+	  }, options)
+
+	  if (options.pattern == null) {
+	    throw new Error('InputMask: you must provide a pattern.')
+	  }
+
+	  if (options.placeholderChar.length !== 1) {
+	    throw new Error('InputMask: placeholderChar should be a single character.')
+	  }
+
+	  this.placeholderChar = options.placeholderChar
+	  this.formatCharacters = mergeFormatCharacters(options.formatCharacters)
+	  this.setPattern(options.pattern, {
+	    value: options.value,
+	    selection: options.selection
+	  })
+	}
+
+	// Editing
+
+	/**
+	 * Applies a single character of input based on the current selection.
+	 * @param {string} char
+	 * @return {boolean} true if a change has been made to value or selection as a
+	 *   result of the input, false otherwise.
+	 */
+	InputMask.prototype.input = function input(char) {
+	  // Ignore additional input if the cursor's at the end of the pattern
+	  if (this.selection.start === this.selection.end &&
+	      this.selection.start === this.pattern.length) {
+	    return false
+	  }
+
+	  var selectionBefore = copy(this.selection)
+	  var valueBefore = this.getValue()
+
+	  var inputIndex = this.selection.start
+
+	  // If the cursor or selection is prior to the first editable character, make
+	  // sure any input given is applied to it.
+	  if (inputIndex < this.pattern.firstEditableIndex) {
+	    inputIndex = this.pattern.firstEditableIndex
+	  }
+
+	  // Bail out or add the character to input
+	  if (this.pattern.isEditableIndex(inputIndex)) {
+	    if (!this.pattern.isValidAtIndex(char, inputIndex)) {
+	      return false
+	    }
+	    this.value[inputIndex] = this.pattern.transform(char, inputIndex)
+	  }
+
+	  // If multiple characters were selected, blank the remainder out based on the
+	  // pattern.
+	  var end = this.selection.end - 1
+	  while (end > inputIndex) {
+	    if (this.pattern.isEditableIndex(end)) {
+	      this.value[end] = this.placeholderChar
+	    }
+	    end--
+	  }
+
+	  // Advance the cursor to the next character
+	  this.selection.start = this.selection.end = inputIndex + 1
+
+	  // Skip over any subsequent static characters
+	  while (this.pattern.length > this.selection.start &&
+	         !this.pattern.isEditableIndex(this.selection.start)) {
+	    this.selection.start++
+	    this.selection.end++
+	  }
+
+	  // History
+	  if (this._historyIndex != null) {
+	    // Took more input after undoing, so blow any subsequent history away
+	    console.log('splice(', this._historyIndex, this._history.length - this._historyIndex, ')')
+	    this._history.splice(this._historyIndex, this._history.length - this._historyIndex)
+	    this._historyIndex = null
+	  }
+	  if (this._lastOp !== 'input' ||
+	      selectionBefore.start !== selectionBefore.end ||
+	      this._lastSelection !== null && selectionBefore.start !== this._lastSelection.start) {
+	    this._history.push({value: valueBefore, selection: selectionBefore, lastOp: this._lastOp})
+	  }
+	  this._lastOp = 'input'
+	  this._lastSelection = copy(this.selection)
+
+	  return true
+	}
+
+	/**
+	 * Attempts to delete from the value based on the current cursor position or
+	 * selection.
+	 * @return {boolean} true if the value or selection changed as the result of
+	 *   backspacing, false otherwise.
+	 */
+	InputMask.prototype.backspace = function backspace() {
+	  // If the cursor is at the start there's nothing to do
+	  if (this.selection.start === 0 && this.selection.end === 0) {
+	    return false
+	  }
+
+	  var selectionBefore = copy(this.selection)
+	  var valueBefore = this.getValue()
+
+	  // No range selected - work on the character preceding the cursor
+	  if (this.selection.start === this.selection.end) {
+	    if (this.pattern.isEditableIndex(this.selection.start - 1)) {
+	      this.value[this.selection.start - 1] = this.placeholderChar
+	    }
+	    this.selection.start--
+	    this.selection.end--
+	  }
+	  // Range selected - delete characters and leave the cursor at the start of the selection
+	  else {
+	    var end = this.selection.end - 1
+	    while (end >= this.selection.start) {
+	      if (this.pattern.isEditableIndex(end)) {
+	        this.value[end] = this.placeholderChar
+	      }
+	      end--
+	    }
+	    this.selection.end = this.selection.start
+	  }
+
+	  // History
+	  if (this._historyIndex != null) {
+	    // Took more input after undoing, so blow any subsequent history away
+	    this._history.splice(this._historyIndex, this._history.length - this._historyIndex)
+	  }
+	  if (this._lastOp !== 'backspace' ||
+	      selectionBefore.start !== selectionBefore.end ||
+	      this._lastSelection !== null && selectionBefore.start !== this._lastSelection.start) {
+	    this._history.push({value: valueBefore, selection: selectionBefore, lastOp: this._lastOp})
+	  }
+	  this._lastOp = 'backspace'
+	  this._lastSelection = copy(this.selection)
+
+	  return true
+	}
+
+	/**
+	 * Attempts to paste a string of input at the current cursor position or over
+	 * the top of the current selection.
+	 * Invalid content at any position will cause the paste to be rejected, and it
+	 * may contain static parts of the mask's pattern.
+	 * @param {string} input
+	 * @return {boolean} true if the paste was successful, false otherwise.
+	 */
+	InputMask.prototype.paste = function paste(input) {
+	  // This is necessary because we're just calling input() with each character
+	  // and rolling back if any were invalid, rather than checking up-front.
+	  var initialState = {
+	    value: this.value.slice(),
+	    selection: copy(this.selection),
+	    _lastOp: this._lastOp,
+	    _history: this._history.slice(),
+	    _historyIndex: this._historyIndex,
+	    _lastSelection: copy(this._lastSelection)
+	  }
+
+	  // If there are static characters at the start of the pattern and the cursor
+	  // or selection is within them, the static characters must match for a valid
+	  // paste.
+	  if (this.selection.start < this.pattern.firstEditableIndex) {
+	    for (var i = 0, l = this.pattern.firstEditableIndex - this.selection.start; i < l; i++) {
+	      if (input.charAt(i) !== this.pattern.pattern[i]) {
+	        return false
+	      }
+	    }
+
+	    // Continue as if the selection and input started from the editable part of
+	    // the pattern.
+	    input = input.substring(this.pattern.firstEditableIndex - this.selection.start)
+	    this.selection.start = this.pattern.firstEditableIndex
+	  }
+
+	  for (i = 0, l = input.length;
+	       i < l && this.selection.start <= this.pattern.lastEditableIndex;
+	       i++) {
+	    var valid = this.input(input.charAt(i))
+	    // Allow static parts of the pattern to appear in pasted input - they will
+	    // already have been stepped over by input(), so verify that the value
+	    // deemed invalid by input() was the expected static character.
+	    if (!valid) {
+	      if (this.selection.start > 0) {
+	        // XXX This only allows for one static character to be skipped
+	        var patternIndex = this.selection.start - 1
+	        if (!this.pattern.isEditableIndex(patternIndex) &&
+	            input.charAt(i) === this.pattern.pattern[patternIndex]) {
+	          continue
+	        }
+	      }
+	      extend(this, initialState)
+	      return false
+	    }
+	  }
+
+	  return true
+	}
+
+	// History
+
+	InputMask.prototype.undo = function undo() {
+	  // If there is no history, or nothing more on the history stack, we can't undo
+	  if (this._history.length === 0 || this._historyIndex === 0) {
+	    return false
+	  }
+
+	  var historyItem
+	  if (this._historyIndex == null) {
+	    // Not currently undoing, set up the initial history index
+	    this._historyIndex = this._history.length - 1
+	    historyItem = this._history[this._historyIndex]
+	    // Add a new history entry if anything has changed since the last one, so we
+	    // can redo back to the initial state we started undoing from.
+	    var value = this.getValue()
+	    if (historyItem.value !== value ||
+	        historyItem.selection.start !== this.selection.start ||
+	        historyItem.selection.end !== this.selection.end) {
+	      this._history.push({value: value, selection: copy(this.selection), lastOp: this._lastOp, startUndo: true})
+	    }
+	  }
+	  else {
+	    historyItem = this._history[--this._historyIndex]
+	  }
+
+	  this.value = historyItem.value.split('')
+	  this.selection = historyItem.selection
+	  this._lastOp = historyItem.lastOp
+	  return true
+	}
+
+	InputMask.prototype.redo = function redo() {
+	  if (this._history.length === 0 || this._historyIndex == null) {
+	    return false
+	  }
+	  var historyItem = this._history[++this._historyIndex]
+	  // If this is the last history item, we're done redoing
+	  if (this._historyIndex === this._history.length - 1) {
+	    this._historyIndex = null
+	    // If the last history item was only added to start undoing, remove it
+	    if (historyItem.startUndo) {
+	      this._history.pop()
+	    }
+	  }
+	  this.value = historyItem.value.split('')
+	  this.selection = historyItem.selection
+	  this._lastOp = historyItem.lastOp
+	  return true
+	}
+
+	// Getters & setters
+
+	InputMask.prototype.setPattern = function setPattern(pattern, options) {
+	  options = extend({
+	    selection: {start: 0, end: 0},
+	    value: ''
+	  }, options)
+	  this.pattern = new Pattern(pattern, this.formatCharacters, this.placeholderChar)
+	  this.setValue(options.value)
+	  this.emptyValue = this.pattern.formatValue([]).join('')
+	  this.selection = options.selection
+	  this._resetHistory()
+	}
+
+	InputMask.prototype.setSelection = function setSelection(selection) {
+	  this.selection = copy(selection)
+	  if (this.selection.start === this.selection.end) {
+	    if (this.selection.start < this.pattern.firstEditableIndex) {
+	      this.selection.start = this.selection.end = this.pattern.firstEditableIndex
+	      return true
+	    }
+	    if (this.selection.end > this.pattern.lastEditableIndex + 1) {
+	      this.selection.start = this.selection.end = this.pattern.lastEditableIndex + 1
+	      return true
+	    }
+	  }
+	  return false
+	}
+
+	InputMask.prototype.setValue = function setValue(value) {
+	  if (value == null) {
+	    value = ''
+	  }
+	  this.value = this.pattern.formatValue(value.split(''))
+	}
+
+	InputMask.prototype.getValue = function getValue() {
+	  return this.value.join('')
+	}
+
+	InputMask.prototype.getRawValue = function getRawValue() {
+	  var rawValue = []
+	  for (var i = 0; i < this.value.length; i++) {
+	    if (this.pattern._editableIndices[i] === true) {
+	      rawValue.push(this.value[i])
+	    }
+	  }
+	  return rawValue.join('')
+	}
+
+	InputMask.prototype._resetHistory = function _resetHistory() {
+	  this._history = []
+	  this._historyIndex = null
+	  this._lastOp = null
+	  this._lastSelection = copy(this.selection)
+	}
+
+	InputMask.Pattern = Pattern
+
+	module.exports = InputMask
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
-	var _year_dropdown = __webpack_require__(31);
+	var _year_dropdown = __webpack_require__(43);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _month = __webpack_require__(34);
+	var _month = __webpack_require__(46);
 
 	var _month2 = _interopRequireDefault(_month);
 
@@ -1603,7 +3101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Calendar = _react2.default.createClass({
 	  displayName: "Calendar",
 
-	  mixins: [__webpack_require__(33)],
+	  mixins: [__webpack_require__(45)],
 
 	  propTypes: {
 	    weekdays: _react2.default.PropTypes.array.isRequired,
@@ -1717,6 +3215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var onSelect = _props.onSelect;
 	    var locale = _props.locale;
 
+
 	    return _react2.default.createElement(
 	      "div",
 	      { className: "datepicker__today-button", onClick: function onClick() {
@@ -1768,7 +3267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Calendar;
 
 /***/ },
-/* 31 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1777,7 +3276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _year_dropdown_options = __webpack_require__(32);
+	var _year_dropdown_options = __webpack_require__(44);
 
 	var _year_dropdown_options2 = _interopRequireDefault(_year_dropdown_options);
 
@@ -1837,7 +3336,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = YearDropdown;
 
 /***/ },
-/* 32 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1859,7 +3358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var YearDropdownOptions = _react2.default.createClass({
 	  displayName: "YearDropdownOptions",
 
-	  mixins: [__webpack_require__(33)],
+	  mixins: [__webpack_require__(45)],
 
 	  propTypes: {
 	    year: _react2.default.PropTypes.number.isRequired,
@@ -1942,13 +3441,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = YearDropdownOptions;
 
 /***/ },
-/* 33 */
+/* 45 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_33__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_45__;
 
 /***/ },
-/* 34 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1957,7 +3456,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _week = __webpack_require__(35);
+	var _week = __webpack_require__(47);
 
 	var _week2 = _interopRequireDefault(_week);
 
@@ -2025,7 +3524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Month;
 
 /***/ },
-/* 35 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2034,7 +3533,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _day = __webpack_require__(36);
+	var _day = __webpack_require__(48);
 
 	var _day2 = _interopRequireDefault(_day);
 
@@ -2095,7 +3594,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Week;
 
 /***/ },
-/* 36 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2108,11 +3607,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(37);
+	var _classnames = __webpack_require__(49);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _some = __webpack_require__(38);
+	var _some = __webpack_require__(50);
 
 	var _some2 = _interopRequireDefault(_some);
 
@@ -2153,6 +3652,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var excludeDates = _props.excludeDates;
 	    var includeDates = _props.includeDates;
 	    var filterDate = _props.filterDate;
+
 
 	    return minDate && day.isBefore(minDate, "day") || maxDate && day.isAfter(maxDate, "day") || (0, _some2.default)(excludeDates, function (excludeDate) {
 	      return _this.isSameDay(excludeDate);
@@ -2201,7 +3701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Day;
 
 /***/ },
-/* 37 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2255,14 +3755,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 38 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var arraySome = __webpack_require__(5),
-	    baseCallback = __webpack_require__(39),
-	    baseSome = __webpack_require__(55),
+	    baseCallback = __webpack_require__(51),
+	    baseSome = __webpack_require__(67),
 	    isArray = __webpack_require__(20),
-	    isIterateeCall = __webpack_require__(61);
+	    isIterateeCall = __webpack_require__(73);
 
 	/**
 	 * Checks if `predicate` returns truthy for **any** element of `collection`.
@@ -2328,14 +3828,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 39 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseMatches = __webpack_require__(40),
-	    baseMatchesProperty = __webpack_require__(46),
+	var baseMatches = __webpack_require__(52),
+	    baseMatchesProperty = __webpack_require__(58),
 	    bindCallback = __webpack_require__(24),
 	    identity = __webpack_require__(25),
-	    property = __webpack_require__(53);
+	    property = __webpack_require__(65);
 
 	/**
 	 * The base implementation of `_.callback` which supports specifying the
@@ -2369,12 +3869,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 40 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsMatch = __webpack_require__(41),
-	    getMatchData = __webpack_require__(43),
-	    toObject = __webpack_require__(42);
+	var baseIsMatch = __webpack_require__(53),
+	    getMatchData = __webpack_require__(55),
+	    toObject = __webpack_require__(54);
 
 	/**
 	 * The base implementation of `_.matches` which does not clone `source`.
@@ -2405,11 +3905,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 41 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseIsEqual = __webpack_require__(2),
-	    toObject = __webpack_require__(42);
+	    toObject = __webpack_require__(54);
 
 	/**
 	 * The base implementation of `_.isMatch` without support for callback
@@ -2463,7 +3963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 42 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(12);
@@ -2483,11 +3983,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 43 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isStrictComparable = __webpack_require__(44),
-	    pairs = __webpack_require__(45);
+	var isStrictComparable = __webpack_require__(56),
+	    pairs = __webpack_require__(57);
 
 	/**
 	 * Gets the propery names, values, and compare flags of `object`.
@@ -2510,7 +4010,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 44 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(12);
@@ -2531,11 +4031,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 45 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var keys = __webpack_require__(8),
-	    toObject = __webpack_require__(42);
+	    toObject = __webpack_require__(54);
 
 	/**
 	 * Creates a two dimensional array of the key-value pairs for `object`,
@@ -2570,18 +4070,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 46 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(47),
+	var baseGet = __webpack_require__(59),
 	    baseIsEqual = __webpack_require__(2),
-	    baseSlice = __webpack_require__(48),
+	    baseSlice = __webpack_require__(60),
 	    isArray = __webpack_require__(20),
-	    isKey = __webpack_require__(49),
-	    isStrictComparable = __webpack_require__(44),
-	    last = __webpack_require__(50),
-	    toObject = __webpack_require__(42),
-	    toPath = __webpack_require__(51);
+	    isKey = __webpack_require__(61),
+	    isStrictComparable = __webpack_require__(56),
+	    last = __webpack_require__(62),
+	    toObject = __webpack_require__(54),
+	    toPath = __webpack_require__(63);
 
 	/**
 	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
@@ -2621,10 +4121,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 47 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(42);
+	var toObject = __webpack_require__(54);
 
 	/**
 	 * The base implementation of `get` without support for string paths
@@ -2656,7 +4156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 48 */
+/* 60 */
 /***/ function(module, exports) {
 
 	/**
@@ -2694,11 +4194,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 49 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArray = __webpack_require__(20),
-	    toObject = __webpack_require__(42);
+	    toObject = __webpack_require__(54);
 
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
@@ -2728,7 +4228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 50 */
+/* 62 */
 /***/ function(module, exports) {
 
 	/**
@@ -2753,10 +4253,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(52),
+	var baseToString = __webpack_require__(64),
 	    isArray = __webpack_require__(20);
 
 	/** Used to match property names within property paths. */
@@ -2787,7 +4287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 52 */
+/* 64 */
 /***/ function(module, exports) {
 
 	/**
@@ -2806,12 +4306,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 53 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var baseProperty = __webpack_require__(16),
-	    basePropertyDeep = __webpack_require__(54),
-	    isKey = __webpack_require__(49);
+	    basePropertyDeep = __webpack_require__(66),
+	    isKey = __webpack_require__(61);
 
 	/**
 	 * Creates a function that returns the property value at `path` on a
@@ -2843,11 +4343,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(47),
-	    toPath = __webpack_require__(51);
+	var baseGet = __webpack_require__(59),
+	    toPath = __webpack_require__(63);
 
 	/**
 	 * A specialized version of `baseProperty` which supports deep paths.
@@ -2868,10 +4368,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 55 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseEach = __webpack_require__(56);
+	var baseEach = __webpack_require__(68);
 
 	/**
 	 * The base implementation of `_.some` without support for callback shorthands
@@ -2897,11 +4397,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(57),
-	    createBaseEach = __webpack_require__(60);
+	var baseForOwn = __webpack_require__(69),
+	    createBaseEach = __webpack_require__(72);
 
 	/**
 	 * The base implementation of `_.forEach` without support for callback
@@ -2918,10 +4418,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(58),
+	var baseFor = __webpack_require__(70),
 	    keys = __webpack_require__(8);
 
 	/**
@@ -2941,10 +4441,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 58 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(59);
+	var createBaseFor = __webpack_require__(71);
 
 	/**
 	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
@@ -2964,10 +4464,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(42);
+	var toObject = __webpack_require__(54);
 
 	/**
 	 * Creates a base function for `_.forIn` or `_.forInRight`.
@@ -2997,12 +4497,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getLength = __webpack_require__(15),
 	    isLength = __webpack_require__(17),
-	    toObject = __webpack_require__(42);
+	    toObject = __webpack_require__(54);
 
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -3034,7 +4534,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 61 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(14),
@@ -3068,7 +4568,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 62 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3144,7 +4644,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this._tether != null) {
 	      this._tether.setOptions(this._tetherOptions());
 	    } else if (window && document) {
-	      var Tether = __webpack_require__(63);
+	      var Tether = __webpack_require__(75);
 	      this._tether = new Tether(this._tetherOptions());
 	    }
 	  },
@@ -3163,10 +4663,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Popover;
 
 /***/ },
-/* 63 */
+/* 75 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_63__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_75__;
 
 /***/ }
 /******/ ])
