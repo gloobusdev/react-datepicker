@@ -106,7 +106,7 @@ var DatePicker = React.createClass({
   },
 
   handleSelect(date) {
-    const {minDate, maxDate} = this.props
+    const {minDate, maxDate, dateFormat} = this.props
     const rMinDate = this.reformatMoment(minDate)
     const rMaxDate = this.reformatMoment(maxDate)
     const rDate = this.reformatMoment(date)
@@ -118,6 +118,11 @@ var DatePicker = React.createClass({
     ) {
             valid = true
             this.setSelected(date);
+    } else {
+        const sDate = date.format(dateFormat)
+        if(sDate && sDate.replace(/[^0-9]/g,"").length === 8){
+            this.props.dateError(true)
+        }
     }
 
     this.setState({dateValid: valid})
@@ -225,6 +230,7 @@ var DatePicker = React.createClass({
           tabIndex={this.props.tabIndex}
           handleChange={this.handleSelect}
           isValid={dateValid}
+          dateError={this.props.dateError}
           isTypeable={this.props.isTypeable} />
         {clearButton}
         {this.props.disabled ? null : this.calendar()}
