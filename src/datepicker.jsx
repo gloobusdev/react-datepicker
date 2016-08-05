@@ -99,13 +99,22 @@ var DatePicker = React.createClass({
     return datePicker.contains(element);
   },
 
+  reformatMoment(val) {
+      const {dateFormat} = this.props
+      const stringVal = val.format(dateFormat)
+      return moment(stringVal, dateFormat)
+  },
+
   handleSelect(date) {
     const {minDate, maxDate} = this.props
+    const rMinDate = this.reformatMoment(minDate)
+    const rMaxDate = this.reformatMoment(maxDate)
+    const rDate = this.reformatMoment(date)
     let valid = false
     if (
         date.isValid() &&
-        (minDate ? date.isAfter(minDate) : true) &&
-        (maxDate ? date.isBefore(maxDate) : true)
+        (rMinDate ? rDate.isAfter(rMinDate) : true) &&
+        (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)
     ) {
             valid = true
             this.setSelected(date);

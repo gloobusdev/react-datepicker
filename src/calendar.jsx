@@ -16,7 +16,7 @@ function getDateInView({ moment, selected, minDate, maxDate }) {
     return selected;
   } else if (minDate && minDate.isAfter(current)) {
     return minDate;
-  } else if (maxDate && maxDate.isBefore(current)) {
+  } else if (maxDate && maxDate.isSameOrBefore(current)) {
     return maxDate;
   } else {
     return current;
