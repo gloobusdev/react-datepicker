@@ -184,15 +184,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    return datePicker.contains(element);
 	  },
+	  reformatMoment: function reformatMoment(val) {
+	    var dateFormat = this.props.dateFormat;
+
+	    var stringVal = val.format(dateFormat);
+	    return (0, _moment2.default)(stringVal, dateFormat);
+	  },
 	  handleSelect: function handleSelect(date) {
 	    var _props = this.props;
 	    var minDate = _props.minDate;
 	    var maxDate = _props.maxDate;
+	    var dateFormat = _props.dateFormat;
 
+	    var rMinDate = this.reformatMoment(minDate);
+	    var rMaxDate = this.reformatMoment(maxDate);
+	    var rDate = this.reformatMoment(date);
 	    var valid = false;
-	    if (date.isValid() && (minDate ? date.isAfter(minDate) : true) && (maxDate ? date.isBefore(maxDate) : true)) {
+	    if (date.isValid() && (rMinDate ? rDate.isAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	      valid = true;
 	      this.setSelected(date);
+	    } else {
+	      var sDate = date.format(dateFormat);
+	      if (sDate && sDate.replace(/[^0-9]/g, "").length === 8) {
+	        this.props.dateError(true);
+	      }
 	    }
 
 	    this.setState({ dateValid: valid });
@@ -299,6 +314,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        tabIndex: this.props.tabIndex,
 	        handleChange: this.handleSelect,
 	        isValid: dateValid,
+	        dateError: this.props.dateError,
 	        isTypeable: this.props.isTypeable }),
 	      clearButton,
 	      this.props.disabled ? null : this.calendar()
@@ -3091,7 +3107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return selected;
 	  } else if (minDate && minDate.isAfter(current)) {
 	    return minDate;
-	  } else if (maxDate && maxDate.isBefore(current)) {
+	  } else if (maxDate && maxDate.isSameOrBefore(current)) {
 	    return maxDate;
 	  } else {
 	    return current;
