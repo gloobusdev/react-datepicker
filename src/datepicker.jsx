@@ -154,11 +154,11 @@ var DatePicker = React.createClass({
 
   onClearClick(event) {
     event.preventDefault();
-
     // Due to issues with IE onchange events sometimes this gets noisy, so skip if we've already cleared
     if (this.state.selected === null) return;
 
     this.setState({
+      focus: false,
       selected: null
     }, () => {
       this.props.onClear();
