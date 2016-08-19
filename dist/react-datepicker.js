@@ -241,11 +241,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this6 = this;
 
 	    event.preventDefault();
-
 	    // Due to issues with IE onchange events sometimes this gets noisy, so skip if we've already cleared
 	    if (this.state.selected === null) return;
 
 	    this.setState({
+	      focus: false,
 	      selected: null
 	    }, function () {
 	      _this6.props.onClear();
