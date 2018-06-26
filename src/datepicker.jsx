@@ -113,7 +113,7 @@ var DatePicker = React.createClass({
     let valid = false
     if (
         date.isValid() &&
-        (rMinDate ? rDate.isSamerOrAfter(rMinDate) : true) &&
+        (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) &&
         (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)
     ) {
             valid = true
