@@ -200,7 +200,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var rMaxDate = this.reformatMoment(maxDate);
 	    var rDate = this.reformatMoment(date);
 	    var valid = false;
-	    if (date.isValid() && (rMinDate ? rDate.isSamerOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
+	    if (date.isValid() && (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	      valid = true;
 	      this.setSelected(date);
 	    } else {
