@@ -7,7 +7,7 @@
 		exports["DatePicker"] = factory(require("moment"), require("react-dom"), require("react"), require("react-onclickoutside"), require("tether"));
 	else
 		root["DatePicker"] = factory(root["moment"], root["ReactDOM"], root["React"], root["OnClickOutside"], root["Tether"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_45__, __WEBPACK_EXTERNAL_MODULE_75__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_26__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_35__, __WEBPACK_EXTERNAL_MODULE_65__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -68,11 +68,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _date_input2 = _interopRequireDefault(_date_input);
 
-	var _calendar = __webpack_require__(42);
+	var _calendar = __webpack_require__(32);
 
 	var _calendar2 = _interopRequireDefault(_calendar);
 
-	var _popover = __webpack_require__(74);
+	var _popover = __webpack_require__(64);
 
 	var _popover2 = _interopRequireDefault(_popover);
 
@@ -191,16 +191,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (0, _moment2.default)(stringVal, dateFormat);
 	  },
 	  handleSelect: function handleSelect(date) {
-	    var _props = this.props;
-	    var minDate = _props.minDate;
-	    var maxDate = _props.maxDate;
-	    var dateFormat = _props.dateFormat;
+	    var _props = this.props,
+	        minDate = _props.minDate,
+	        maxDate = _props.maxDate,
+	        dateFormat = _props.dateFormat;
 
 	    var rMinDate = this.reformatMoment(minDate);
 	    var rMaxDate = this.reformatMoment(maxDate);
 	    var rDate = this.reformatMoment(date);
 	    var valid = false;
-	    if (date.isValid() && (rMinDate ? rDate.isAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
+	    if (date.isValid() && (rMinDate ? rDate.isSamerOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	      valid = true;
 	      this.setSelected(date);
 	    } else {
@@ -324,9 +324,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = DatePicker;
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var baseIsEqual = __webpack_require__(2),
 	    bindCallback = __webpack_require__(24);
@@ -384,9 +384,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isEqual;
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var baseIsEqualDeep = __webpack_require__(3),
 	    isObject = __webpack_require__(12),
@@ -418,9 +418,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseIsEqual;
 
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var equalArrays = __webpack_require__(4),
 	    equalByTag = __webpack_require__(6),
@@ -526,9 +526,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseIsEqualDeep;
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var arraySome = __webpack_require__(5);
 
@@ -583,9 +583,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = equalArrays;
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * A specialized version of `_.some` for arrays without support for callback
@@ -612,9 +612,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = arraySome;
 
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/** `Object#toString` result references. */
 	var boolTag = '[object Boolean]',
@@ -666,9 +666,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = equalByTag;
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var keys = __webpack_require__(8);
 
@@ -739,9 +739,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = equalObjects;
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(9),
 	    isArrayLike = __webpack_require__(14),
@@ -790,9 +790,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = keys;
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isNative = __webpack_require__(10);
 
@@ -812,9 +812,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = getNative;
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isFunction = __webpack_require__(11),
 	    isObjectLike = __webpack_require__(13);
@@ -866,9 +866,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isNative;
 
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(12);
 
@@ -910,9 +910,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isFunction;
 
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
@@ -944,9 +944,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObject;
 
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Checks if `value` is object-like.
@@ -962,9 +962,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObjectLike;
 
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var getLength = __webpack_require__(15),
 	    isLength = __webpack_require__(17);
@@ -983,9 +983,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isArrayLike;
 
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var baseProperty = __webpack_require__(16);
 
@@ -1004,9 +1004,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = getLength;
 
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * The base implementation of `_.property` without support for deep paths.
@@ -1024,9 +1024,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseProperty;
 
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
@@ -1050,9 +1050,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isLength;
 
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isArguments = __webpack_require__(19),
 	    isArray = __webpack_require__(20),
@@ -1097,9 +1097,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = shimKeys;
 
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(14),
 	    isObjectLike = __webpack_require__(13);
@@ -1137,9 +1137,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isArguments;
 
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(9),
 	    isLength = __webpack_require__(17),
@@ -1183,9 +1183,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isArray;
 
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -1213,9 +1213,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isIndex;
 
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isArguments = __webpack_require__(19),
 	    isArray = __webpack_require__(20),
@@ -1283,9 +1283,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = keysIn;
 
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isLength = __webpack_require__(17),
 	    isObjectLike = __webpack_require__(13);
@@ -1363,9 +1363,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isTypedArray;
 
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var identity = __webpack_require__(25);
 
@@ -1408,9 +1408,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = bindCallback;
 
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * This method returns the first argument provided to it.
@@ -1434,15 +1434,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = identity;
 
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_26__;
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -1542,10 +1542,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    },
 	    render: function render() {
-	        var _props = this.props;
-	        var focus = _props.focus;
-	        var date = _props.date;
-	        var isValid = _props.isValid;
+	        var _props = this.props,
+	            focus = _props.focus,
+	            date = _props.date,
+	            isValid = _props.isValid;
 	        var maybeDate = this.state.maybeDate;
 
 	        var chosenDate = date && (0, _moment2.default)(date).format(this.props.dateFormat);
@@ -1636,21 +1636,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = DateInput;
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
 
-/***/ },
+/***/ }),
 /* 29 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_29__;
 
-/***/ },
+/***/ }),
 /* 30 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1658,14 +1658,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	var React = __webpack_require__(29);
-
-	var _require = __webpack_require__(31);
-
-	var getSelection = _require.getSelection;
-	var setSelection = _require.setSelection;
-
-	var InputMask = __webpack_require__(41);
+	var InputMask = __webpack_require__(31);
 
 	var KEYCODE_Z = 90;
 	var KEYCODE_Y = 89;
@@ -1676,6 +1672,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function isRedo(e) {
 	  return (e.ctrlKey || e.metaKey) && e.keyCode === (e.shiftKey ? KEYCODE_Z : KEYCODE_Y);
+	}
+
+	function getSelection(el) {
+	  var start, end, rangeEl, clone;
+
+	  if (el.selectionStart !== undefined) {
+	    start = el.selectionStart;
+	    end = el.selectionEnd;
+	  } else {
+	    try {
+	      el.focus();
+	      rangeEl = el.createTextRange();
+	      clone = rangeEl.duplicate();
+
+	      rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
+	      clone.setEndPoint('EndToStart', rangeEl);
+
+	      start = clone.text.length;
+	      end = start + rangeEl.text.length;
+	    } catch (e) {/* not focused or not visible */}
+	  }
+
+	  return { start: start, end: end };
+	}
+
+	function setSelection(el, selection) {
+	  var rangeEl;
+
+	  try {
+	    if (el.selectionStart !== undefined) {
+	      el.focus();
+	      el.setSelectionRange(selection.start, selection.end);
+	    } else {
+	      el.focus();
+	      rangeEl = el.createTextRange();
+	      rangeEl.collapse(true);
+	      rangeEl.moveStart('character', selection.start);
+	      rangeEl.moveEnd('character', selection.end - selection.start);
+	      rangeEl.select();
+	    }
+	  } catch (e) {/* not focused or not visible */}
 	}
 
 	var MaskedInput = React.createClass({
@@ -1707,11 +1744,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-	    // update the pattern first to avoid left over placeholders
-	    if (this.props.mask !== nextProps.mask) {
+	    if (this.props.mask !== nextProps.mask && this.props.value !== nextProps.mask) {
+	      // if we get a new value and a new mask at the same time
+	      // check if the mask.value is still the initial value
+	      // - if so use the nextProps value
+	      // - otherwise the `this.mask` has a value for us (most likely from paste action)
+	      if (this.mask.getValue() === this.mask.emptyValue) {
+	        this.mask.setPattern(nextProps.mask, { value: nextProps.value });
+	      } else {
+	        this.mask.setPattern(nextProps.mask, { value: this.mask.getRawValue() });
+	      }
+	    } else if (this.props.mask !== nextProps.mask) {
 	      this.mask.setPattern(nextProps.mask, { value: this.mask.getRawValue() });
-	    }
-	    if (this.props.value !== nextProps.value) {
+	    } else if (this.props.value !== nextProps.value) {
 	      this.mask.setValue(nextProps.value);
 	    }
 	  },
@@ -1818,7 +1863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    e.preventDefault();
 	    this._updateMaskSelection();
-	    if (this.mask.input(e.key)) {
+	    if (this.mask.input(e.key || e.data)) {
 	      e.target.value = this.mask.getValue();
 	      this._updateInputSelection();
 	      if (this.props.onChange) {
@@ -1848,6 +1893,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return value === this.mask.emptyValue ? '' : value;
 	  },
 
+	  _keyPressPropName: function _keyPressPropName() {
+	    if (typeof navigator !== 'undefined') {
+	      return navigator.userAgent.match(/Android/i) ? 'onBeforeInput' : 'onKeyPress';
+	    }
+	    return 'onKeyPress';
+	  },
+
+	  _getEventHandlers: function _getEventHandlers() {
+	    return _defineProperty({
+	      onChange: this._onChange,
+	      onKeyDown: this._onKeyDown,
+	      onPaste: this._onPaste
+	    }, this._keyPressPropName(), this._onKeyPress);
+	  },
+
 	  focus: function focus() {
 	    this.input.focus();
 	  },
@@ -1859,710 +1919,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	  render: function render() {
 	    var _this = this;
 
+	    var ref = function ref(r) {
+	      return _this.input = r;
+	    };
+	    var maxLength = this.mask.pattern.length;
+	    var value = this._getDisplayValue();
+	    var eventHandlers = this._getEventHandlers();
 	    var _props = this.props;
-	    var mask = _props.mask;
-	    var formatCharacters = _props.formatCharacters;
-	    var size = _props.size;
-	    var placeholder = _props.placeholder;
-	    var placeholderChar = _props.placeholderChar;
+	    var _props$size = _props.size;
+	    var size = _props$size === undefined ? maxLength : _props$size;
+	    var _props$placeholder = _props.placeholder;
+	    var placeholder = _props$placeholder === undefined ? this.mask.emptyValue : _props$placeholder;
+	    var _props2 = this.props;
+	    var placeholderChar = _props2.placeholderChar;
+	    var formatCharacters = _props2.formatCharacters;
 
-	    var props = _objectWithoutProperties(_props, ['mask', 'formatCharacters', 'size', 'placeholder', 'placeholderChar']);
+	    var cleanedProps = _objectWithoutProperties(_props2, ['placeholderChar', 'formatCharacters']);
 
-	    var patternLength = this.mask.pattern.length;
-	    return React.createElement('input', _extends({}, props, {
-	      ref: function (r) {
-	        return _this.input = r;
-	      },
-	      maxLength: patternLength,
-	      onChange: this._onChange,
-	      onKeyDown: this._onKeyDown,
-	      onKeyPress: this._onKeyPress,
-	      onPaste: this._onPaste,
-	      placeholder: placeholder || this.mask.emptyValue,
-	      size: size || patternLength,
-	      value: this._getDisplayValue()
-	    }));
+	    var inputProps = _extends({}, cleanedProps, eventHandlers, { ref: ref, maxLength: maxLength, value: value, size: size, placeholder: placeholder });
+	    return React.createElement('input', inputProps);
 	  }
 	});
 
 	module.exports = MaskedInput;
 
-/***/ },
+/***/ }),
 /* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactInputSelection
-	 */
-
-	'use strict';
-
-	var ReactDOMSelection = __webpack_require__(32);
-
-	var containsNode = __webpack_require__(36);
-	var focusNode = __webpack_require__(39);
-	var getActiveElement = __webpack_require__(40);
-
-	function isInDocument(node) {
-	  return containsNode(document.documentElement, node);
-	}
-
-	/**
-	 * @ReactInputSelection: React input selection module. Based on Selection.js,
-	 * but modified to be suitable for react and has a couple of bug fixes (doesn't
-	 * assume buttons have range selections allowed).
-	 * Input selection module for React.
-	 */
-	var ReactInputSelection = {
-
-	  hasSelectionCapabilities: function (elem) {
-	    var nodeName = elem && elem.nodeName && elem.nodeName.toLowerCase();
-	    return nodeName && (nodeName === 'input' && elem.type === 'text' || nodeName === 'textarea' || elem.contentEditable === 'true');
-	  },
-
-	  getSelectionInformation: function () {
-	    var focusedElem = getActiveElement();
-	    return {
-	      focusedElem: focusedElem,
-	      selectionRange: ReactInputSelection.hasSelectionCapabilities(focusedElem) ? ReactInputSelection.getSelection(focusedElem) : null
-	    };
-	  },
-
-	  /**
-	   * @restoreSelection: If any selection information was potentially lost,
-	   * restore it. This is useful when performing operations that could remove dom
-	   * nodes and place them back in, resulting in focus being lost.
-	   */
-	  restoreSelection: function (priorSelectionInformation) {
-	    var curFocusedElem = getActiveElement();
-	    var priorFocusedElem = priorSelectionInformation.focusedElem;
-	    var priorSelectionRange = priorSelectionInformation.selectionRange;
-	    if (curFocusedElem !== priorFocusedElem && isInDocument(priorFocusedElem)) {
-	      if (ReactInputSelection.hasSelectionCapabilities(priorFocusedElem)) {
-	        ReactInputSelection.setSelection(priorFocusedElem, priorSelectionRange);
-	      }
-	      focusNode(priorFocusedElem);
-	    }
-	  },
-
-	  /**
-	   * @getSelection: Gets the selection bounds of a focused textarea, input or
-	   * contentEditable node.
-	   * -@input: Look up selection bounds of this input
-	   * -@return {start: selectionStart, end: selectionEnd}
-	   */
-	  getSelection: function (input) {
-	    var selection;
-
-	    if ('selectionStart' in input) {
-	      // Modern browser with input or textarea.
-	      selection = {
-	        start: input.selectionStart,
-	        end: input.selectionEnd
-	      };
-	    } else if (document.selection && input.nodeName && input.nodeName.toLowerCase() === 'input') {
-	      // IE8 input.
-	      var range = document.selection.createRange();
-	      // There can only be one selection per document in IE, so it must
-	      // be in our element.
-	      if (range.parentElement() === input) {
-	        selection = {
-	          start: -range.moveStart('character', -input.value.length),
-	          end: -range.moveEnd('character', -input.value.length)
-	        };
-	      }
-	    } else {
-	      // Content editable or old IE textarea.
-	      selection = ReactDOMSelection.getOffsets(input);
-	    }
-
-	    return selection || { start: 0, end: 0 };
-	  },
-
-	  /**
-	   * @setSelection: Sets the selection bounds of a textarea or input and focuses
-	   * the input.
-	   * -@input     Set selection bounds of this input or textarea
-	   * -@offsets   Object of same form that is returned from get*
-	   */
-	  setSelection: function (input, offsets) {
-	    var start = offsets.start;
-	    var end = offsets.end;
-	    if (end === undefined) {
-	      end = start;
-	    }
-
-	    if ('selectionStart' in input) {
-	      input.selectionStart = start;
-	      input.selectionEnd = Math.min(end, input.value.length);
-	    } else if (document.selection && input.nodeName && input.nodeName.toLowerCase() === 'input') {
-	      var range = input.createTextRange();
-	      range.collapse(true);
-	      range.moveStart('character', start);
-	      range.moveEnd('character', end - start);
-	      range.select();
-	    } else {
-	      ReactDOMSelection.setOffsets(input, offsets);
-	    }
-	  }
-	};
-
-	module.exports = ReactInputSelection;
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactDOMSelection
-	 */
-
-	'use strict';
-
-	var ExecutionEnvironment = __webpack_require__(33);
-
-	var getNodeForCharacterOffset = __webpack_require__(34);
-	var getTextContentAccessor = __webpack_require__(35);
-
-	/**
-	 * While `isCollapsed` is available on the Selection object and `collapsed`
-	 * is available on the Range object, IE11 sometimes gets them wrong.
-	 * If the anchor/focus nodes and offsets are the same, the range is collapsed.
-	 */
-	function isCollapsed(anchorNode, anchorOffset, focusNode, focusOffset) {
-	  return anchorNode === focusNode && anchorOffset === focusOffset;
-	}
-
-	/**
-	 * Get the appropriate anchor and focus node/offset pairs for IE.
-	 *
-	 * The catch here is that IE's selection API doesn't provide information
-	 * about whether the selection is forward or backward, so we have to
-	 * behave as though it's always forward.
-	 *
-	 * IE text differs from modern selection in that it behaves as though
-	 * block elements end with a new line. This means character offsets will
-	 * differ between the two APIs.
-	 *
-	 * @param {DOMElement} node
-	 * @return {object}
-	 */
-	function getIEOffsets(node) {
-	  var selection = document.selection;
-	  var selectedRange = selection.createRange();
-	  var selectedLength = selectedRange.text.length;
-
-	  // Duplicate selection so we can move range without breaking user selection.
-	  var fromStart = selectedRange.duplicate();
-	  fromStart.moveToElementText(node);
-	  fromStart.setEndPoint('EndToStart', selectedRange);
-
-	  var startOffset = fromStart.text.length;
-	  var endOffset = startOffset + selectedLength;
-
-	  return {
-	    start: startOffset,
-	    end: endOffset
-	  };
-	}
-
-	/**
-	 * @param {DOMElement} node
-	 * @return {?object}
-	 */
-	function getModernOffsets(node) {
-	  var selection = window.getSelection && window.getSelection();
-
-	  if (!selection || selection.rangeCount === 0) {
-	    return null;
-	  }
-
-	  var anchorNode = selection.anchorNode;
-	  var anchorOffset = selection.anchorOffset;
-	  var focusNode = selection.focusNode;
-	  var focusOffset = selection.focusOffset;
-
-	  var currentRange = selection.getRangeAt(0);
-
-	  // In Firefox, range.startContainer and range.endContainer can be "anonymous
-	  // divs", e.g. the up/down buttons on an <input type="number">. Anonymous
-	  // divs do not seem to expose properties, triggering a "Permission denied
-	  // error" if any of its properties are accessed. The only seemingly possible
-	  // way to avoid erroring is to access a property that typically works for
-	  // non-anonymous divs and catch any error that may otherwise arise. See
-	  // https://bugzilla.mozilla.org/show_bug.cgi?id=208427
-	  try {
-	    /* eslint-disable no-unused-expressions */
-	    currentRange.startContainer.nodeType;
-	    currentRange.endContainer.nodeType;
-	    /* eslint-enable no-unused-expressions */
-	  } catch (e) {
-	    return null;
-	  }
-
-	  // If the node and offset values are the same, the selection is collapsed.
-	  // `Selection.isCollapsed` is available natively, but IE sometimes gets
-	  // this value wrong.
-	  var isSelectionCollapsed = isCollapsed(selection.anchorNode, selection.anchorOffset, selection.focusNode, selection.focusOffset);
-
-	  var rangeLength = isSelectionCollapsed ? 0 : currentRange.toString().length;
-
-	  var tempRange = currentRange.cloneRange();
-	  tempRange.selectNodeContents(node);
-	  tempRange.setEnd(currentRange.startContainer, currentRange.startOffset);
-
-	  var isTempRangeCollapsed = isCollapsed(tempRange.startContainer, tempRange.startOffset, tempRange.endContainer, tempRange.endOffset);
-
-	  var start = isTempRangeCollapsed ? 0 : tempRange.toString().length;
-	  var end = start + rangeLength;
-
-	  // Detect whether the selection is backward.
-	  var detectionRange = document.createRange();
-	  detectionRange.setStart(anchorNode, anchorOffset);
-	  detectionRange.setEnd(focusNode, focusOffset);
-	  var isBackward = detectionRange.collapsed;
-
-	  return {
-	    start: isBackward ? end : start,
-	    end: isBackward ? start : end
-	  };
-	}
-
-	/**
-	 * @param {DOMElement|DOMTextNode} node
-	 * @param {object} offsets
-	 */
-	function setIEOffsets(node, offsets) {
-	  var range = document.selection.createRange().duplicate();
-	  var start, end;
-
-	  if (offsets.end === undefined) {
-	    start = offsets.start;
-	    end = start;
-	  } else if (offsets.start > offsets.end) {
-	    start = offsets.end;
-	    end = offsets.start;
-	  } else {
-	    start = offsets.start;
-	    end = offsets.end;
-	  }
-
-	  range.moveToElementText(node);
-	  range.moveStart('character', start);
-	  range.setEndPoint('EndToStart', range);
-	  range.moveEnd('character', end - start);
-	  range.select();
-	}
-
-	/**
-	 * In modern non-IE browsers, we can support both forward and backward
-	 * selections.
-	 *
-	 * Note: IE10+ supports the Selection object, but it does not support
-	 * the `extend` method, which means that even in modern IE, it's not possible
-	 * to programmatically create a backward selection. Thus, for all IE
-	 * versions, we use the old IE API to create our selections.
-	 *
-	 * @param {DOMElement|DOMTextNode} node
-	 * @param {object} offsets
-	 */
-	function setModernOffsets(node, offsets) {
-	  if (!window.getSelection) {
-	    return;
-	  }
-
-	  var selection = window.getSelection();
-	  var length = node[getTextContentAccessor()].length;
-	  var start = Math.min(offsets.start, length);
-	  var end = offsets.end === undefined ? start : Math.min(offsets.end, length);
-
-	  // IE 11 uses modern selection, but doesn't support the extend method.
-	  // Flip backward selections, so we can set with a single range.
-	  if (!selection.extend && start > end) {
-	    var temp = end;
-	    end = start;
-	    start = temp;
-	  }
-
-	  var startMarker = getNodeForCharacterOffset(node, start);
-	  var endMarker = getNodeForCharacterOffset(node, end);
-
-	  if (startMarker && endMarker) {
-	    var range = document.createRange();
-	    range.setStart(startMarker.node, startMarker.offset);
-	    selection.removeAllRanges();
-
-	    if (start > end) {
-	      selection.addRange(range);
-	      selection.extend(endMarker.node, endMarker.offset);
-	    } else {
-	      range.setEnd(endMarker.node, endMarker.offset);
-	      selection.addRange(range);
-	    }
-	  }
-	}
-
-	var useIEOffsets = ExecutionEnvironment.canUseDOM && 'selection' in document && !('getSelection' in window);
-
-	var ReactDOMSelection = {
-	  /**
-	   * @param {DOMElement} node
-	   */
-	  getOffsets: useIEOffsets ? getIEOffsets : getModernOffsets,
-
-	  /**
-	   * @param {DOMElement|DOMTextNode} node
-	   * @param {object} offsets
-	   */
-	  setOffsets: useIEOffsets ? setIEOffsets : setModernOffsets
-	};
-
-	module.exports = ReactDOMSelection;
-
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-
-	'use strict';
-
-	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
-
-	/**
-	 * Simple, lightweight module assisting with the detection and context of
-	 * Worker. Helps avoid circular dependencies and allows code to reason about
-	 * whether or not they are in a Worker, even if they never include the main
-	 * `ReactWorker` dependency.
-	 */
-	var ExecutionEnvironment = {
-
-	  canUseDOM: canUseDOM,
-
-	  canUseWorkers: typeof Worker !== 'undefined',
-
-	  canUseEventListeners: canUseDOM && !!(window.addEventListener || window.attachEvent),
-
-	  canUseViewport: canUseDOM && !!window.screen,
-
-	  isInWorker: !canUseDOM // For now, this is true - might change in the future.
-
-	};
-
-	module.exports = ExecutionEnvironment;
-
-/***/ },
-/* 34 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule getNodeForCharacterOffset
-	 */
-
-	'use strict';
-
-	/**
-	 * Given any node return the first leaf node without children.
-	 *
-	 * @param {DOMElement|DOMTextNode} node
-	 * @return {DOMElement|DOMTextNode}
-	 */
-
-	function getLeafNode(node) {
-	  while (node && node.firstChild) {
-	    node = node.firstChild;
-	  }
-	  return node;
-	}
-
-	/**
-	 * Get the next sibling within a container. This will walk up the
-	 * DOM if a node's siblings have been exhausted.
-	 *
-	 * @param {DOMElement|DOMTextNode} node
-	 * @return {?DOMElement|DOMTextNode}
-	 */
-	function getSiblingNode(node) {
-	  while (node) {
-	    if (node.nextSibling) {
-	      return node.nextSibling;
-	    }
-	    node = node.parentNode;
-	  }
-	}
-
-	/**
-	 * Get object describing the nodes which contain characters at offset.
-	 *
-	 * @param {DOMElement|DOMTextNode} root
-	 * @param {number} offset
-	 * @return {?object}
-	 */
-	function getNodeForCharacterOffset(root, offset) {
-	  var node = getLeafNode(root);
-	  var nodeStart = 0;
-	  var nodeEnd = 0;
-
-	  while (node) {
-	    if (node.nodeType === 3) {
-	      nodeEnd = nodeStart + node.textContent.length;
-
-	      if (nodeStart <= offset && nodeEnd >= offset) {
-	        return {
-	          node: node,
-	          offset: offset - nodeStart
-	        };
-	      }
-
-	      nodeStart = nodeEnd;
-	    }
-
-	    node = getLeafNode(getSiblingNode(node));
-	  }
-	}
-
-	module.exports = getNodeForCharacterOffset;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule getTextContentAccessor
-	 */
-
-	'use strict';
-
-	var ExecutionEnvironment = __webpack_require__(33);
-
-	var contentKey = null;
-
-	/**
-	 * Gets the key used to access text content on a DOM node.
-	 *
-	 * @return {?string} Key used to access text content.
-	 * @internal
-	 */
-	function getTextContentAccessor() {
-	  if (!contentKey && ExecutionEnvironment.canUseDOM) {
-	    // Prefer textContent to innerText because many browsers support both but
-	    // SVG <text> elements don't support innerText even when <div> does.
-	    contentKey = 'textContent' in document.documentElement ? 'textContent' : 'innerText';
-	  }
-	  return contentKey;
-	}
-
-	module.exports = getTextContentAccessor;
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * 
-	 */
-
-	var isTextNode = __webpack_require__(37);
-
-	/*eslint-disable no-bitwise */
-
-	/**
-	 * Checks if a given DOM node contains or is another DOM node.
-	 */
-	function containsNode(outerNode, innerNode) {
-	  if (!outerNode || !innerNode) {
-	    return false;
-	  } else if (outerNode === innerNode) {
-	    return true;
-	  } else if (isTextNode(outerNode)) {
-	    return false;
-	  } else if (isTextNode(innerNode)) {
-	    return containsNode(outerNode, innerNode.parentNode);
-	  } else if ('contains' in outerNode) {
-	    return outerNode.contains(innerNode);
-	  } else if (outerNode.compareDocumentPosition) {
-	    return !!(outerNode.compareDocumentPosition(innerNode) & 16);
-	  } else {
-	    return false;
-	  }
-	}
-
-	module.exports = containsNode;
-
-/***/ },
-/* 37 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 */
-
-	var isNode = __webpack_require__(38);
-
-	/**
-	 * @param {*} object The object to check.
-	 * @return {boolean} Whether or not the object is a DOM text node.
-	 */
-	function isTextNode(object) {
-	  return isNode(object) && object.nodeType == 3;
-	}
-
-	module.exports = isTextNode;
-
-/***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 */
-
-	/**
-	 * @param {*} object The object to check.
-	 * @return {boolean} Whether or not the object is a DOM node.
-	 */
-	function isNode(object) {
-	  return !!(object && (typeof Node === 'function' ? object instanceof Node : typeof object === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string'));
-	}
-
-	module.exports = isNode;
-
-/***/ },
-/* 39 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-
-	'use strict';
-
-	/**
-	 * @param {DOMElement} node input/textarea to focus
-	 */
-
-	function focusNode(node) {
-	  // IE8 can throw "Can't move focus to the control because it is invisible,
-	  // not enabled, or of a type that does not accept the focus." for all kinds of
-	  // reasons that are too expensive and fragile to test.
-	  try {
-	    node.focus();
-	  } catch (e) {}
-	}
-
-	module.exports = focusNode;
-
-/***/ },
-/* 40 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 */
-
-	/* eslint-disable fb-www/typeof-undefined */
-
-	/**
-	 * Same as document.activeElement but wraps in a try-catch block. In IE it is
-	 * not safe to call document.activeElement if there is nothing focused.
-	 *
-	 * The activeElement will be null only if the document or document body is not
-	 * yet defined.
-	 */
-	function getActiveElement() /*?DOMElement*/{
-	  if (typeof document === 'undefined') {
-	    return null;
-	  }
-	  try {
-	    return document.activeElement || document.body;
-	  } catch (e) {
-	    return document.body;
-	  }
-	}
-
-	module.exports = getActiveElement;
-
-/***/ },
-/* 41 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict'
 
@@ -2634,7 +2017,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {string} source
 	 * @patam {?Object} formatCharacters
 	 */
-	function Pattern(source, formatCharacters, placeholderChar) {
+	function Pattern(source, formatCharacters, placeholderChar, isRevealingMask) {
 	  if (!(this instanceof Pattern)) {
 	    return new Pattern(source, formatCharacters, placeholderChar)
 	  }
@@ -2653,9 +2036,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  this.firstEditableIndex = null
 	  /** Index of the last editable character. */
 	  this.lastEditableIndex = null
-
 	  /** Lookup for indices of editable characters in the pattern. */
 	  this._editableIndices = {}
+	  /** If true, only the pattern before the last valid value character shows. */
+	  this.isRevealingMask = isRevealingMask || false
 
 	  this._parse()
 	}
@@ -2705,6 +2089,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  for (var i = 0, l = this.length; i < l ; i++) {
 	    if (this.isEditableIndex(i)) {
+	      if (this.isRevealingMask &&
+	          value.length <= valueIndex &&
+	          !this.isValidAtIndex(value[valueIndex], i)) {
+	        break
+	      }
 	      valueBuffer[i] = (value.length > valueIndex && this.isValidAtIndex(value[valueIndex], i)
 	                        ? this.transform(value[valueIndex], i)
 	                        : this.placeholderChar)
@@ -2747,10 +2136,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function InputMask(options) {
 	  if (!(this instanceof InputMask)) { return new InputMask(options) }
-
 	  options = extend({
 	    formatCharacters: null,
 	    pattern: null,
+	    isRevealingMask: false,
 	    placeholderChar: DEFAULT_PLACEHOLDER_CHAR,
 	    selection: {start: 0, end: 0},
 	    value: ''
@@ -2760,15 +2149,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new Error('InputMask: you must provide a pattern.')
 	  }
 
-	  if (options.placeholderChar.length !== 1) {
-	    throw new Error('InputMask: placeholderChar should be a single character.')
+	  if (typeof options.placeholderChar !== 'string' || options.placeholderChar.length > 1) {
+	    throw new Error('InputMask: placeholderChar should be a single character or an empty string.')
 	  }
 
 	  this.placeholderChar = options.placeholderChar
 	  this.formatCharacters = mergeFormatCharacters(options.formatCharacters)
 	  this.setPattern(options.pattern, {
 	    value: options.value,
-	    selection: options.selection
+	    selection: options.selection,
+	    isRevealingMask: options.isRevealingMask
 	  })
 	}
 
@@ -2829,7 +2219,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // History
 	  if (this._historyIndex != null) {
 	    // Took more input after undoing, so blow any subsequent history away
-	    console.log('splice(', this._historyIndex, this._history.length - this._historyIndex, ')')
 	    this._history.splice(this._historyIndex, this._history.length - this._historyIndex)
 	    this._historyIndex = null
 	  }
@@ -3013,7 +2402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    selection: {start: 0, end: 0},
 	    value: ''
 	  }, options)
-	  this.pattern = new Pattern(pattern, this.formatCharacters, this.placeholderChar)
+	  this.pattern = new Pattern(pattern, this.formatCharacters, this.placeholderChar, options.isRevealingMask)
 	  this.setValue(options.value)
 	  this.emptyValue = this.pattern.formatValue([]).join('')
 	  this.selection = options.selection
@@ -3027,10 +2416,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.selection.start = this.selection.end = this.pattern.firstEditableIndex
 	      return true
 	    }
-	    if (this.selection.end > this.pattern.lastEditableIndex + 1) {
-	      this.selection.start = this.selection.end = this.pattern.lastEditableIndex + 1
-	      return true
+	    // Set selection to the first editable, non-placeholder character before the selection
+	    // OR to the beginning of the pattern
+	    var index = this.selection.start
+	    while (index >= this.pattern.firstEditableIndex) {
+	      if (this.pattern.isEditableIndex(index - 1) &&
+	          this.value[index - 1] !== this.placeholderChar ||
+	          index === this.pattern.firstEditableIndex) {
+	        this.selection.start = this.selection.end = index
+	        break
+	      }
+	      index--
 	    }
+	    return true
 	  }
 	  return false
 	}
@@ -3068,17 +2466,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = InputMask
 
 
-/***/ },
-/* 42 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _year_dropdown = __webpack_require__(43);
+	var _year_dropdown = __webpack_require__(33);
 
 	var _year_dropdown2 = _interopRequireDefault(_year_dropdown);
 
-	var _month = __webpack_require__(46);
+	var _month = __webpack_require__(36);
 
 	var _month2 = _interopRequireDefault(_month);
 
@@ -3097,10 +2495,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function getDateInView(_ref) {
-	  var moment = _ref.moment;
-	  var selected = _ref.selected;
-	  var minDate = _ref.minDate;
-	  var maxDate = _ref.maxDate;
+	  var moment = _ref.moment,
+	      selected = _ref.selected,
+	      minDate = _ref.minDate,
+	      maxDate = _ref.maxDate;
 
 	  var current = moment();
 	  if (selected) {
@@ -3117,7 +2515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Calendar = _react2.default.createClass({
 	  displayName: "Calendar",
 
-	  mixins: [__webpack_require__(45)],
+	  mixins: [__webpack_require__(35)],
 
 	  propTypes: {
 	    weekdays: _react2.default.PropTypes.array.isRequired,
@@ -3226,10 +2624,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      year: this.state.date.year() });
 	  },
 	  renderTodayButton: function renderTodayButton() {
-	    var _props = this.props;
-	    var moment = _props.moment;
-	    var onSelect = _props.onSelect;
-	    var locale = _props.locale;
+	    var _props = this.props,
+	        moment = _props.moment,
+	        onSelect = _props.onSelect,
+	        locale = _props.locale;
 
 
 	    return _react2.default.createElement(
@@ -3282,9 +2680,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Calendar;
 
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3292,7 +2690,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _year_dropdown_options = __webpack_require__(44);
+	var _year_dropdown_options = __webpack_require__(34);
 
 	var _year_dropdown_options2 = _interopRequireDefault(_year_dropdown_options);
 
@@ -3351,9 +2749,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = YearDropdown;
 
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3374,7 +2772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var YearDropdownOptions = _react2.default.createClass({
 	  displayName: "YearDropdownOptions",
 
-	  mixins: [__webpack_require__(45)],
+	  mixins: [__webpack_require__(35)],
 
 	  propTypes: {
 	    year: _react2.default.PropTypes.number.isRequired,
@@ -3407,7 +2805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        selectedYear === year ? _react2.default.createElement(
 	          "span",
 	          { className: "datepicker__year-option--selected" },
-	          "✓"
+	          "\u2713"
 	        ) : "",
 	        year
 	      );
@@ -3456,15 +2854,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = YearDropdownOptions;
 
-/***/ },
-/* 45 */
-/***/ function(module, exports) {
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_45__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_35__;
 
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3472,7 +2870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _week = __webpack_require__(47);
+	var _week = __webpack_require__(37);
 
 	var _week2 = _interopRequireDefault(_week);
 
@@ -3539,9 +2937,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Month;
 
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3549,7 +2947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _day = __webpack_require__(48);
+	var _day = __webpack_require__(38);
 
 	var _day2 = _interopRequireDefault(_day);
 
@@ -3609,9 +3007,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Week;
 
-/***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -3623,11 +3021,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _classnames = __webpack_require__(49);
+	var _classnames = __webpack_require__(39);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _some = __webpack_require__(50);
+	var _some = __webpack_require__(40);
 
 	var _some2 = _interopRequireDefault(_some);
 
@@ -3661,13 +3059,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  isDisabled: function isDisabled() {
 	    var _this = this;
 
-	    var _props = this.props;
-	    var day = _props.day;
-	    var minDate = _props.minDate;
-	    var maxDate = _props.maxDate;
-	    var excludeDates = _props.excludeDates;
-	    var includeDates = _props.includeDates;
-	    var filterDate = _props.filterDate;
+	    var _props = this.props,
+	        day = _props.day,
+	        minDate = _props.minDate,
+	        maxDate = _props.maxDate,
+	        excludeDates = _props.excludeDates,
+	        includeDates = _props.includeDates,
+	        filterDate = _props.filterDate;
 
 
 	    return minDate && day.isBefore(minDate, "day") || maxDate && day.isAfter(maxDate, "day") || (0, _some2.default)(excludeDates, function (excludeDate) {
@@ -3677,10 +3075,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }) || filterDate && !filterDate(day.clone());
 	  },
 	  isInRange: function isInRange() {
-	    var _props2 = this.props;
-	    var day = _props2.day;
-	    var startDate = _props2.startDate;
-	    var endDate = _props2.endDate;
+	    var _props2 = this.props,
+	        day = _props2.day,
+	        startDate = _props2.startDate,
+	        endDate = _props2.endDate;
 
 	    if (!startDate || !endDate) return false;
 
@@ -3716,12 +3114,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Day;
 
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	  Copyright (c) 2016 Jed Watson.
+	  Copyright (c) 2017 Jed Watson.
 	  Licensed under the MIT License (MIT), see
 	  http://jedwatson.github.io/classnames
 	*/
@@ -3743,8 +3141,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				if (argType === 'string' || argType === 'number') {
 					classes.push(arg);
-				} else if (Array.isArray(arg)) {
-					classes.push(classNames.apply(null, arg));
+				} else if (Array.isArray(arg) && arg.length) {
+					var inner = classNames.apply(null, arg);
+					if (inner) {
+						classes.push(inner);
+					}
 				} else if (argType === 'object') {
 					for (var key in arg) {
 						if (hasOwn.call(arg, key) && arg[key]) {
@@ -3758,6 +3159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 
 		if (typeof module !== 'undefined' && module.exports) {
+			classNames.default = classNames;
 			module.exports = classNames;
 		} else if (true) {
 			// register as 'classnames', consistent with npm package name
@@ -3770,15 +3172,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 
-/***/ },
-/* 50 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var arraySome = __webpack_require__(5),
-	    baseCallback = __webpack_require__(51),
-	    baseSome = __webpack_require__(67),
+	    baseCallback = __webpack_require__(41),
+	    baseSome = __webpack_require__(57),
 	    isArray = __webpack_require__(20),
-	    isIterateeCall = __webpack_require__(73);
+	    isIterateeCall = __webpack_require__(63);
 
 	/**
 	 * Checks if `predicate` returns truthy for **any** element of `collection`.
@@ -3843,15 +3245,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = some;
 
 
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseMatches = __webpack_require__(52),
-	    baseMatchesProperty = __webpack_require__(58),
+	var baseMatches = __webpack_require__(42),
+	    baseMatchesProperty = __webpack_require__(48),
 	    bindCallback = __webpack_require__(24),
 	    identity = __webpack_require__(25),
-	    property = __webpack_require__(65);
+	    property = __webpack_require__(55);
 
 	/**
 	 * The base implementation of `_.callback` which supports specifying the
@@ -3884,13 +3286,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseCallback;
 
 
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseIsMatch = __webpack_require__(53),
-	    getMatchData = __webpack_require__(55),
-	    toObject = __webpack_require__(54);
+	var baseIsMatch = __webpack_require__(43),
+	    getMatchData = __webpack_require__(45),
+	    toObject = __webpack_require__(44);
 
 	/**
 	 * The base implementation of `_.matches` which does not clone `source`.
@@ -3920,12 +3322,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseMatches;
 
 
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var baseIsEqual = __webpack_require__(2),
-	    toObject = __webpack_require__(54);
+	    toObject = __webpack_require__(44);
 
 	/**
 	 * The base implementation of `_.isMatch` without support for callback
@@ -3978,9 +3380,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseIsMatch;
 
 
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(12);
 
@@ -3998,12 +3400,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toObject;
 
 
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var isStrictComparable = __webpack_require__(56),
-	    pairs = __webpack_require__(57);
+	var isStrictComparable = __webpack_require__(46),
+	    pairs = __webpack_require__(47);
 
 	/**
 	 * Gets the propery names, values, and compare flags of `object`.
@@ -4025,9 +3427,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = getMatchData;
 
 
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(12);
 
@@ -4046,12 +3448,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isStrictComparable;
 
 
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var keys = __webpack_require__(8),
-	    toObject = __webpack_require__(54);
+	    toObject = __webpack_require__(44);
 
 	/**
 	 * Creates a two dimensional array of the key-value pairs for `object`,
@@ -4085,19 +3487,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = pairs;
 
 
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(59),
+	var baseGet = __webpack_require__(49),
 	    baseIsEqual = __webpack_require__(2),
-	    baseSlice = __webpack_require__(60),
+	    baseSlice = __webpack_require__(50),
 	    isArray = __webpack_require__(20),
-	    isKey = __webpack_require__(61),
-	    isStrictComparable = __webpack_require__(56),
-	    last = __webpack_require__(62),
-	    toObject = __webpack_require__(54),
-	    toPath = __webpack_require__(63);
+	    isKey = __webpack_require__(51),
+	    isStrictComparable = __webpack_require__(46),
+	    last = __webpack_require__(52),
+	    toObject = __webpack_require__(44),
+	    toPath = __webpack_require__(53);
 
 	/**
 	 * The base implementation of `_.matchesProperty` which does not clone `srcValue`.
@@ -4136,11 +3538,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseMatchesProperty;
 
 
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(54);
+	var toObject = __webpack_require__(44);
 
 	/**
 	 * The base implementation of `get` without support for string paths
@@ -4171,9 +3573,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseGet;
 
 
-/***/ },
-/* 60 */
-/***/ function(module, exports) {
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
 
 	/**
 	 * The base implementation of `_.slice` without an iteratee call guard.
@@ -4209,12 +3611,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseSlice;
 
 
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isArray = __webpack_require__(20),
-	    toObject = __webpack_require__(54);
+	    toObject = __webpack_require__(44);
 
 	/** Used to match property names within property paths. */
 	var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\n\\]|\\.)*?\1)\]/,
@@ -4243,9 +3645,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isKey;
 
 
-/***/ },
-/* 62 */
-/***/ function(module, exports) {
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Gets the last element of `array`.
@@ -4268,11 +3670,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = last;
 
 
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseToString = __webpack_require__(64),
+	var baseToString = __webpack_require__(54),
 	    isArray = __webpack_require__(20);
 
 	/** Used to match property names within property paths. */
@@ -4302,9 +3704,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toPath;
 
 
-/***/ },
-/* 64 */
-/***/ function(module, exports) {
+/***/ }),
+/* 54 */
+/***/ (function(module, exports) {
 
 	/**
 	 * Converts `value` to a string if it's not one. An empty string is returned
@@ -4321,13 +3723,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseToString;
 
 
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var baseProperty = __webpack_require__(16),
-	    basePropertyDeep = __webpack_require__(66),
-	    isKey = __webpack_require__(61);
+	    basePropertyDeep = __webpack_require__(56),
+	    isKey = __webpack_require__(51);
 
 	/**
 	 * Creates a function that returns the property value at `path` on a
@@ -4358,12 +3760,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = property;
 
 
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseGet = __webpack_require__(59),
-	    toPath = __webpack_require__(63);
+	var baseGet = __webpack_require__(49),
+	    toPath = __webpack_require__(53);
 
 	/**
 	 * A specialized version of `baseProperty` which supports deep paths.
@@ -4383,11 +3785,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = basePropertyDeep;
 
 
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseEach = __webpack_require__(68);
+	var baseEach = __webpack_require__(58);
 
 	/**
 	 * The base implementation of `_.some` without support for callback shorthands
@@ -4412,12 +3814,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseSome;
 
 
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseForOwn = __webpack_require__(69),
-	    createBaseEach = __webpack_require__(72);
+	var baseForOwn = __webpack_require__(59),
+	    createBaseEach = __webpack_require__(62);
 
 	/**
 	 * The base implementation of `_.forEach` without support for callback
@@ -4433,11 +3835,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseEach;
 
 
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var baseFor = __webpack_require__(70),
+	var baseFor = __webpack_require__(60),
 	    keys = __webpack_require__(8);
 
 	/**
@@ -4456,11 +3858,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseForOwn;
 
 
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(71);
+	var createBaseFor = __webpack_require__(61);
 
 	/**
 	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
@@ -4479,11 +3881,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = baseFor;
 
 
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
 
-	var toObject = __webpack_require__(54);
+	var toObject = __webpack_require__(44);
 
 	/**
 	 * Creates a base function for `_.forIn` or `_.forInRight`.
@@ -4512,13 +3914,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = createBaseFor;
 
 
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var getLength = __webpack_require__(15),
 	    isLength = __webpack_require__(17),
-	    toObject = __webpack_require__(54);
+	    toObject = __webpack_require__(44);
 
 	/**
 	 * Creates a `baseEach` or `baseEachRight` function.
@@ -4549,9 +3951,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = createBaseEach;
 
 
-/***/ },
-/* 73 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(14),
 	    isIndex = __webpack_require__(21),
@@ -4583,9 +3985,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isIterateeCall;
 
 
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -4660,7 +4062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this._tether != null) {
 	      this._tether.setOptions(this._tetherOptions());
 	    } else if (window && document) {
-	      var Tether = __webpack_require__(75);
+	      var Tether = __webpack_require__(65);
 	      this._tether = new Tether(this._tetherOptions());
 	    }
 	  },
@@ -4678,13 +4080,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Popover;
 
-/***/ },
-/* 75 */
-/***/ function(module, exports) {
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_75__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_65__;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
