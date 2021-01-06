@@ -74,10 +74,14 @@ var DatePicker = React.createClass({
   },
 
   handleBlur() {
-    if(!this.state.focus) { return }
+    const {focus, dateValid, selected} = this.state
+    if(!focus) { return }
     setTimeout(() => {
       if (!this.state.datePickerHasFocus) {
         this.props.onBlur(this.state.selected);
+        if( !dateValid){
+          this.props.dateError(true)
+        }
         this.hideCalendar();
       }
     }, 200);
@@ -105,28 +109,32 @@ var DatePicker = React.createClass({
       return moment(stringVal, dateFormat)
   },
 
-  handleSelect(date) {
+  handleSelect(value) {
     const {minDate, maxDate, dateFormat} = this.props
     const rMinDate = this.reformatMoment(minDate)
     const rMaxDate = this.reformatMoment(maxDate)
+    const date = moment(value, dateFormat);
     const rDate = this.reformatMoment(date)
     let valid = false
     if (
-        date.isValid() &&
+        this.validateDate(value) &&
         (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) &&
         (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)
     ) {
-            valid = true
-            this.setSelected(date);
-    } else {
-        const sDate = date.format(dateFormat)
-        if(sDate && sDate.replace(/[^0-9]/g,"").length === 8){
-            this.props.dateError(true)
-        }
+        valid = true
+        this.setSelected(date);
+    } else if(!value || value.length === 0){
+        valid = true
     }
-
     this.setState({dateValid: valid})
   },
+
+  validateDate (data) {
+		return (moment(data, "DD-MM-YYYY", true).isValid()
+		|| moment(data, "DD/MM/YYYY", true).isValid()
+		|| moment(data, "DD.MM.YYYY", true).isValid()
+		|| moment(data, "DD MM YYYY", true).isValid())? true : false
+	},
 
   setSelected(date) {
     this.setState({
@@ -158,6 +166,7 @@ var DatePicker = React.createClass({
     if (this.state.selected === null) return;
 
     this.setState({
+      dateValid: true,
       focus: false,
       selected: null
     }, () => {
@@ -200,12 +209,6 @@ var DatePicker = React.createClass({
   },
 
   render() {
-    var clearButton = null;
-    if (this.props.isClearable && this.state.selected != null) {
-      clearButton = (
-        <a className="close-icon" href="#" onClick={this.onClearClick}></a>
-      );
-    }
     const {dateValid} = this.state
     return (
       <div className="datepicker__input-container">
@@ -231,8 +234,9 @@ var DatePicker = React.createClass({
           handleChange={this.handleSelect}
           isValid={dateValid}
           dateError={this.props.dateError}
-          isTypeable={this.props.isTypeable} />
-        {clearButton}
+          isTypeable={this.props.isTypeable}
+          isClearable={this.props.isClearable}
+          handleClear={this.onClearClick} />
         {this.props.disabled ? null : this.calendar()}
       </div>
     );

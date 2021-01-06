@@ -55,14 +55,11 @@ var DateInput = React.createClass({
 
   handleChange(event) {
     var value = event.target.value;
-    var date = moment(value, this.props.dateFormat, true);
     const {handleChange} = this.props
-    this.setState({
-        maybeDate: value
-    });
-
-    handleChange(date)
-
+      this.setState({
+          maybeDate: value
+      });
+      handleChange(value)
   },
 
   safeDateFormat(date) {
@@ -88,93 +85,50 @@ var DateInput = React.createClass({
     }
   },
 
+  handleOnClear(ev){
+    this.props.handleClear(ev)
+    this.setState({maybeDate: null})
+  },
+
   render() {
-    const {focus, date, isValid} = this.props
+    const {focus, isValid, placeholderText} = this.props
     const {maybeDate} = this.state
-    const chosenDate = date && moment(date).format(this.props.dateFormat)
-    const value = maybeDate || chosenDate
+    let clearButton = null
+    const value = maybeDate
     const isTyping = value && value.replace(/[^0-9]/g,"").length < 8
-    const dateFormatHelper = {}
     const unfocusedColor = (isValid && !isTyping) ? undefined : 'red'
     const focusedColor = (isValid || isTyping) ? undefined : 'red'
     const focusState = focus ? focusedColor : unfocusedColor
     const color = value ? focusState : undefined
-    const dateFormat = this.props.dateFormat.replace(/dd/i, "Dd").replace(/mm/i, "Mm").replace(/yyyy/i, "Yyyy")
-    return <MaskedInput
-        style={{color}}
-        mask={dateFormat}
-        formatCharacters={{
-            'D': {
-                validate: (char) => {
-                    const patt = /[0-3]/
-                    if(patt.test(char)){
-                        dateFormatHelper['D'] = parseInt(char)
-                        return true
-                    }
-                },
-            },
-            'd': {
-                validate: (char) => {
-                    let patt = false
-                    if(dateFormatHelper.D === 0){
-                        patt = /[1-9]/
-                    } else if(dateFormatHelper.D < 3){
-                        patt = /[0-9]/
-                    } else {
-                        patt = /[0-1]/
-                    }
-                    return patt.test(char)
-                },
-            },
-            'M': {
-                validate: (char) => {
-                    const patt = /[0-1]/
-                    if(patt.test(char)){
-                        dateFormatHelper['M'] = parseInt(char)
-                        return true
-                    }
-                },
-            },
-            'm': {
-                validate: (char) => {
-                    let patt = false
-                    if(dateFormatHelper.M === 0){
-                        patt = /[1-9]/
-                    }  else {
-                        patt = /[0-2]/
-                    }
-                    return patt.test(char)
-                },
-            },
-            'Y': {
-                validate: (char) => {
-                    const patt = /[0-9]/g
-                    return patt.test(char)
-                },
-            },
-            'y': {
-                validate: (char) => {
-                    const patt = /[0-9]/g
-                    return patt.test(char)
-                },
-            },
-        }}
-        ref="input"
-        id={this.props.id}
-        name={this.props.name}
-        value={value || ''}
-        onClick={this.handleClick}
-        onKeyDown={this.handleKeyDown}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onChange={this.handleChange}
-        className={`ignore-react-onclickoutside ${this.props.className}`}
-        disabled={this.props.disabled}
-        placeholder={this.props.placeholderText}
-        readOnly={this.props.readOnly}
-        required={this.props.required}
-        tabIndex={this.props.tabIndex} />;
-  }
+
+    if (this.props.isClearable && value && value.length > 0) {
+      clearButton = (
+        <a className="close-icon" href="#" onClick={this.handleOnClear}></a>
+      );
+    }
+    return <div>
+            <input 
+              autoComplete="off"
+              style={{color: color}}
+              ref="input"
+              id={this.props.id}
+              name={this.props.name}
+              value={value || ''}
+              onClick={this.handleClick}
+              onKeyDown={this.handleKeyDown}
+              onFocus={this.props.onFocus}
+              onBlur={this.props.onBlur}
+              onChange={this.handleChange}
+              className={`ignore-react-onclickoutside ${this.props.className}`}
+              disabled={this.props.disabled}
+              placeholder={placeholderText}
+              readOnly={this.props.readOnly}
+              required={this.props.required}
+              tabIndex={this.props.tabIndex} 
+            />  
+            {clearButton}
+          </div>
+   }
 });
 
 module.exports = DateInput;

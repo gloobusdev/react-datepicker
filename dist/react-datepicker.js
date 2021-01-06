@@ -158,12 +158,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  handleBlur: function handleBlur() {
 	    var _this2 = this;
 
-	    if (!this.state.focus) {
+	    var _state = this.state,
+	        focus = _state.focus,
+	        dateValid = _state.dateValid,
+	        selected = _state.selected;
+
+	    if (!focus) {
 	      return;
 	    }
 	    setTimeout(function () {
 	      if (!_this2.state.datePickerHasFocus) {
 	        _this2.props.onBlur(_this2.state.selected);
+	        if (!dateValid) {
+	          _this2.props.dateError(true);
+	        }
 	        _this2.hideCalendar();
 	      }
 	    }, 200);
@@ -190,7 +198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var stringVal = val.format(dateFormat);
 	    return (0, _moment2.default)(stringVal, dateFormat);
 	  },
-	  handleSelect: function handleSelect(date) {
+	  handleSelect: function handleSelect(value) {
 	    var _props = this.props,
 	        minDate = _props.minDate,
 	        maxDate = _props.maxDate,
@@ -198,19 +206,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var rMinDate = this.reformatMoment(minDate);
 	    var rMaxDate = this.reformatMoment(maxDate);
+	    var date = (0, _moment2.default)(value, dateFormat);
 	    var rDate = this.reformatMoment(date);
 	    var valid = false;
-	    if (date.isValid() && (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
+	    if (this.validateDate(value) && (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	      valid = true;
 	      this.setSelected(date);
-	    } else {
-	      var sDate = date.format(dateFormat);
-	      if (sDate && sDate.replace(/[^0-9]/g, "").length === 8) {
-	        this.props.dateError(true);
-	      }
+	    } else if (!value || value.length === 0) {
+	      valid = true;
 	    }
-
 	    this.setState({ dateValid: valid });
+	  },
+	  validateDate: function validateDate(data) {
+	    return (0, _moment2.default)(data, "DD-MM-YYYY", true).isValid() || (0, _moment2.default)(data, "DD/MM/YYYY", true).isValid() || (0, _moment2.default)(data, "DD.MM.YYYY", true).isValid() || (0, _moment2.default)(data, "DD MM YYYY", true).isValid() ? true : false;
 	  },
 	  setSelected: function setSelected(date) {
 	    var _this4 = this;
@@ -245,6 +253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (this.state.selected === null) return;
 
 	    this.setState({
+	      dateValid: true,
 	      focus: false,
 	      selected: null
 	    }, function () {
@@ -284,10 +293,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  },
 	  render: function render() {
-	    var clearButton = null;
-	    if (this.props.isClearable && this.state.selected != null) {
-	      clearButton = _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.onClearClick });
-	    }
 	    var dateValid = this.state.dateValid;
 
 	    return _react2.default.createElement(
@@ -315,8 +320,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        handleChange: this.handleSelect,
 	        isValid: dateValid,
 	        dateError: this.props.dateError,
-	        isTypeable: this.props.isTypeable }),
-	      clearButton,
+	        isTypeable: this.props.isTypeable,
+	        isClearable: this.props.isClearable,
+	        handleClear: this.onClearClick }),
 	      this.props.disabled ? null : this.calendar()
 	    );
 	  }
@@ -1465,173 +1471,127 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var DateInput = _react2.default.createClass({
-	    displayName: "DateInput",
-	    getDefaultProps: function getDefaultProps() {
-	        return {
-	            dateFormat: "YYYY-MM-DD",
-	            className: "datepicker__input",
-	            onBlur: function onBlur() {}
-	        };
-	    },
-	    componentWillMount: function componentWillMount() {
-	        this.setState({
-	            maybeDate: this.safeDateFormat(this.props.date)
-	        });
-	    },
-	    componentDidMount: function componentDidMount() {
-	        this.toggleFocus(this.props.focus);
-	    },
-	    componentWillReceiveProps: function componentWillReceiveProps(newProps) {
-	        this.toggleFocus(newProps.focus);
+	  displayName: "DateInput",
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      dateFormat: "YYYY-MM-DD",
+	      className: "datepicker__input",
+	      onBlur: function onBlur() {}
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    this.setState({
+	      maybeDate: this.safeDateFormat(this.props.date)
+	    });
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.toggleFocus(this.props.focus);
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    this.toggleFocus(newProps.focus);
 
-	        // It checks that user is typing some date and
-	        // we should skipp updating because it would clear date input.
-	        // In particular, it checks that we pass the typeable flag in datepicker props
-	        // and that input has focus
-	        // and that new date is null (when input date is invalid the "this.props.invalidateSelected()"
-	        // method sets state as null).
-	        // The main disadvantage of this approach is that it is imposible to clear date
-	        // while the input has focus.
-	        var doesUserType = newProps.isTypeable && newProps.focus && !newProps.date;
+	    // It checks that user is typing some date and
+	    // we should skipp updating because it would clear date input.
+	    // In particular, it checks that we pass the typeable flag in datepicker props
+	    // and that input has focus
+	    // and that new date is null (when input date is invalid the "this.props.invalidateSelected()"
+	    // method sets state as null).
+	    // The main disadvantage of this approach is that it is imposible to clear date
+	    // while the input has focus.
+	    var doesUserType = newProps.isTypeable && newProps.focus && !newProps.date;
 
-	        // If we're receiving a different date then apply it.
-	        // If we're receiving a null date continue displaying the
-	        // value currently in the textbox.
-	        if (newProps.date != this.props.date && !doesUserType) {
-	            this.setState({
-	                maybeDate: this.safeDateFormat(newProps.date)
-	            });
-	        }
-	    },
-	    toggleFocus: function toggleFocus(focus) {
-	        if (focus) {
-	            this.refs.input.focus();
-	        } else {
-	            this.refs.input.blur();
-	        }
-	    },
-	    handleChange: function handleChange(event) {
-	        var value = event.target.value;
-	        var date = (0, _moment2.default)(value, this.props.dateFormat, true);
-	        var handleChange = this.props.handleChange;
-
-	        this.setState({
-	            maybeDate: value
-	        });
-
-	        handleChange(date);
-	    },
-	    safeDateFormat: function safeDateFormat(date) {
-	        return !!date ? date.format(this.props.dateFormat) : null;
-	    },
-	    handleKeyDown: function handleKeyDown(event) {
-	        switch (event.key) {
-	            case "Enter":
-	                event.preventDefault();
-	                this.props.handleEnter();
-	                break;
-	            case "Escape":
-	                event.preventDefault();
-	                this.props.hideCalendar();
-	                break;
-	        }
-	    },
-	    handleClick: function handleClick(event) {
-	        if (!this.props.disabled) {
-	            this.props.handleClick(event);
-	        }
-	    },
-	    render: function render() {
-	        var _props = this.props,
-	            focus = _props.focus,
-	            date = _props.date,
-	            isValid = _props.isValid;
-	        var maybeDate = this.state.maybeDate;
-
-	        var chosenDate = date && (0, _moment2.default)(date).format(this.props.dateFormat);
-	        var value = maybeDate || chosenDate;
-	        var isTyping = value && value.replace(/[^0-9]/g, "").length < 8;
-	        var dateFormatHelper = {};
-	        var unfocusedColor = isValid && !isTyping ? undefined : 'red';
-	        var focusedColor = isValid || isTyping ? undefined : 'red';
-	        var focusState = focus ? focusedColor : unfocusedColor;
-	        var color = value ? focusState : undefined;
-	        var dateFormat = this.props.dateFormat.replace(/dd/i, "Dd").replace(/mm/i, "Mm").replace(/yyyy/i, "Yyyy");
-	        return _react2.default.createElement(_reactMaskedinput2.default, {
-	            style: { color: color },
-	            mask: dateFormat,
-	            formatCharacters: {
-	                'D': {
-	                    validate: function validate(char) {
-	                        var patt = /[0-3]/;
-	                        if (patt.test(char)) {
-	                            dateFormatHelper['D'] = parseInt(char);
-	                            return true;
-	                        }
-	                    }
-	                },
-	                'd': {
-	                    validate: function validate(char) {
-	                        var patt = false;
-	                        if (dateFormatHelper.D === 0) {
-	                            patt = /[1-9]/;
-	                        } else if (dateFormatHelper.D < 3) {
-	                            patt = /[0-9]/;
-	                        } else {
-	                            patt = /[0-1]/;
-	                        }
-	                        return patt.test(char);
-	                    }
-	                },
-	                'M': {
-	                    validate: function validate(char) {
-	                        var patt = /[0-1]/;
-	                        if (patt.test(char)) {
-	                            dateFormatHelper['M'] = parseInt(char);
-	                            return true;
-	                        }
-	                    }
-	                },
-	                'm': {
-	                    validate: function validate(char) {
-	                        var patt = false;
-	                        if (dateFormatHelper.M === 0) {
-	                            patt = /[1-9]/;
-	                        } else {
-	                            patt = /[0-2]/;
-	                        }
-	                        return patt.test(char);
-	                    }
-	                },
-	                'Y': {
-	                    validate: function validate(char) {
-	                        var patt = /[0-9]/g;
-	                        return patt.test(char);
-	                    }
-	                },
-	                'y': {
-	                    validate: function validate(char) {
-	                        var patt = /[0-9]/g;
-	                        return patt.test(char);
-	                    }
-	                }
-	            },
-	            ref: "input",
-	            id: this.props.id,
-	            name: this.props.name,
-	            value: value || '',
-	            onClick: this.handleClick,
-	            onKeyDown: this.handleKeyDown,
-	            onFocus: this.props.onFocus,
-	            onBlur: this.props.onBlur,
-	            onChange: this.handleChange,
-	            className: "ignore-react-onclickoutside " + this.props.className,
-	            disabled: this.props.disabled,
-	            placeholder: this.props.placeholderText,
-	            readOnly: this.props.readOnly,
-	            required: this.props.required,
-	            tabIndex: this.props.tabIndex });
+	    // If we're receiving a different date then apply it.
+	    // If we're receiving a null date continue displaying the
+	    // value currently in the textbox.
+	    if (newProps.date != this.props.date && !doesUserType) {
+	      this.setState({
+	        maybeDate: this.safeDateFormat(newProps.date)
+	      });
 	    }
+	  },
+	  toggleFocus: function toggleFocus(focus) {
+	    if (focus) {
+	      this.refs.input.focus();
+	    } else {
+	      this.refs.input.blur();
+	    }
+	  },
+	  handleChange: function handleChange(event) {
+	    var value = event.target.value;
+	    var handleChange = this.props.handleChange;
+
+	    this.setState({
+	      maybeDate: value
+	    });
+	    handleChange(value);
+	  },
+	  safeDateFormat: function safeDateFormat(date) {
+	    return !!date ? date.format(this.props.dateFormat) : null;
+	  },
+	  handleKeyDown: function handleKeyDown(event) {
+	    switch (event.key) {
+	      case "Enter":
+	        event.preventDefault();
+	        this.props.handleEnter();
+	        break;
+	      case "Escape":
+	        event.preventDefault();
+	        this.props.hideCalendar();
+	        break;
+	    }
+	  },
+	  handleClick: function handleClick(event) {
+	    if (!this.props.disabled) {
+	      this.props.handleClick(event);
+	    }
+	  },
+	  handleOnClear: function handleOnClear(ev) {
+	    this.props.handleClear(ev);
+	    this.setState({ maybeDate: null });
+	  },
+	  render: function render() {
+	    var _props = this.props,
+	        focus = _props.focus,
+	        isValid = _props.isValid,
+	        placeholderText = _props.placeholderText;
+	    var maybeDate = this.state.maybeDate;
+
+	    var clearButton = null;
+	    var value = maybeDate;
+	    var isTyping = value && value.replace(/[^0-9]/g, "").length < 8;
+	    var unfocusedColor = isValid && !isTyping ? undefined : 'red';
+	    var focusedColor = isValid || isTyping ? undefined : 'red';
+	    var focusState = focus ? focusedColor : unfocusedColor;
+	    var color = value ? focusState : undefined;
+
+	    if (this.props.isClearable && value && value.length > 0) {
+	      clearButton = _react2.default.createElement("a", { className: "close-icon", href: "#", onClick: this.handleOnClear });
+	    }
+	    return _react2.default.createElement(
+	      "div",
+	      null,
+	      _react2.default.createElement("input", {
+	        autoComplete: "off",
+	        style: { color: color },
+	        ref: "input",
+	        id: this.props.id,
+	        name: this.props.name,
+	        value: value || '',
+	        onClick: this.handleClick,
+	        onKeyDown: this.handleKeyDown,
+	        onFocus: this.props.onFocus,
+	        onBlur: this.props.onBlur,
+	        onChange: this.handleChange,
+	        className: "ignore-react-onclickoutside " + this.props.className,
+	        disabled: this.props.disabled,
+	        placeholder: placeholderText,
+	        readOnly: this.props.readOnly,
+	        required: this.props.required,
+	        tabIndex: this.props.tabIndex
+	      }),
+	      clearButton
+	    );
+	  }
 	});
 
 	module.exports = DateInput;
