@@ -20237,6 +20237,7 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      dateValid: true,
+	      dateErrorMessage: "",
 	      focus: false,
 	      selected: this.props.selected
 	    };
@@ -20317,13 +20318,23 @@
 	    var date = (0, _moment2.default)(value, dateFormat);
 	    var rDate = this.reformatMoment(date);
 	    var valid = false;
+	    var errorMessage = "";
 	    if (this.validateDate(value) && (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) && (rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	      valid = true;
 	      this.setSelected(date);
-	    } else if (!value || value.length === 0) {
+	    } else {
+	      if (!this.validateDate(value)) {
+	        errorMessage = "FORMAT_ERROR";
+	      } else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true)) {
+	        errorMessage = "MIN_DATE_ERROR";
+	      } else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true)) {
+	        errorMessage = "MAX_DATE_ERROR";
+	      }
+	    }
+	    if (!value || value.length === 0) {
 	      valid = true;
 	    }
-	    this.setState({ dateValid: valid });
+	    this.setState({ dateValid: valid, dateErrorMessage: errorMessage });
 	  },
 	  validateDate: function validateDate(data) {
 	    return (0, _moment2.default)(data, "DD-MM-YYYY", true).isValid() || (0, _moment2.default)(data, "DD/MM/YYYY", true).isValid() || (0, _moment2.default)(data, "DD.MM.YYYY", true).isValid() || (0, _moment2.default)(data, "DD MM YYYY", true).isValid() ? true : false;
@@ -20362,6 +20373,7 @@
 
 	    this.setState({
 	      dateValid: true,
+	      dateErrorMessage: '',
 	      focus: false,
 	      selected: null
 	    }, function () {
@@ -20401,7 +20413,9 @@
 	    }
 	  },
 	  render: function render() {
-	    var dateValid = this.state.dateValid;
+	    var _state2 = this.state,
+	        dateValid = _state2.dateValid,
+	        dateErrorMessage = _state2.dateErrorMessage;
 
 	    return _react2.default.createElement(
 	      "div",
@@ -20426,8 +20440,9 @@
 	        required: this.props.required,
 	        tabIndex: this.props.tabIndex,
 	        handleChange: this.handleSelect,
-	        isValid: dateValid,
-	        dateError: this.props.dateError,
+	        isValid: dateValid
+	        // dateErrorMessage={dateErrorMessage}
+	        , dateError: this.props.dateError,
 	        isTypeable: this.props.isTypeable,
 	        isClearable: this.props.isClearable,
 	        handleClear: this.onClearClick }),

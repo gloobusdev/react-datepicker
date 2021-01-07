@@ -46,6 +46,7 @@ var DatePicker = React.createClass({
   getInitialState() {
     return {
       dateValid: true,
+      dateErrorMessage: "",
       focus: false,
       selected: this.props.selected
     };
@@ -116,6 +117,7 @@ var DatePicker = React.createClass({
     const date = moment(value, dateFormat);
     const rDate = this.reformatMoment(date)
     let valid = false
+    let errorMessage = ""
     if (
         this.validateDate(value) &&
         (rMinDate ? rDate.isSameOrAfter(rMinDate) : true) &&
@@ -123,10 +125,19 @@ var DatePicker = React.createClass({
     ) {
         valid = true
         this.setSelected(date);
-    } else if(!value || value.length === 0){
-        valid = true
+    } else {
+      if (!this.validateDate(value)) {
+        errorMessage = "FORMAT_ERROR"
+      }else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true) ) {
+        errorMessage = "MIN_DATE_ERROR"
+      }else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true) ) {
+        errorMessage = "MAX_DATE_ERROR"
+      }
     }
-    this.setState({dateValid: valid})
+    if(!value || value.length === 0){
+      valid = true
+    }
+    this.setState({dateValid: valid, dateErrorMessage: errorMessage})
   },
 
   validateDate (data) {
@@ -167,6 +178,7 @@ var DatePicker = React.createClass({
 
     this.setState({
       dateValid: true,
+      dateErrorMessage: '',
       focus: false,
       selected: null
     }, () => {
@@ -209,7 +221,7 @@ var DatePicker = React.createClass({
   },
 
   render() {
-    const {dateValid} = this.state
+    const {dateValid, dateErrorMessage} = this.state
     return (
       <div className="datepicker__input-container">
         <DateInput
@@ -233,6 +245,7 @@ var DatePicker = React.createClass({
           tabIndex={this.props.tabIndex}
           handleChange={this.handleSelect}
           isValid={dateValid}
+          // dateErrorMessage={dateErrorMessage}
           dateError={this.props.dateError}
           isTypeable={this.props.isTypeable}
           isClearable={this.props.isClearable}
