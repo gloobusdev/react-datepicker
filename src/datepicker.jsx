@@ -82,6 +82,8 @@ var DatePicker = React.createClass({
         this.props.onBlur(this.state.selected);
         if( !dateValid){
           this.props.dateError(true)
+        }else{
+          this.props.dateError(false)
         }
         this.hideCalendar();
       }
@@ -136,6 +138,7 @@ var DatePicker = React.createClass({
     }
     if(!value || value.length === 0){
       valid = true
+      dateErrorMessage = ''
     }
     this.setState({dateValid: valid, dateErrorMessage: errorMessage})
   },

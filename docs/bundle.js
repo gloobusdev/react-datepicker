@@ -20280,6 +20280,8 @@
 	        _this2.props.onBlur(_this2.state.selected);
 	        if (!dateValid) {
 	          _this2.props.dateError(true);
+	        } else {
+	          _this2.props.dateError(false);
 	        }
 	        _this2.hideCalendar();
 	      }
@@ -20333,6 +20335,7 @@
 	    }
 	    if (!value || value.length === 0) {
 	      valid = true;
+	      dateErrorMessage = '';
 	    }
 	    this.setState({ dateValid: valid, dateErrorMessage: errorMessage });
 	  },

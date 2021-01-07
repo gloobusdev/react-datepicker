@@ -172,6 +172,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _this2.props.onBlur(_this2.state.selected);
 	        if (!dateValid) {
 	          _this2.props.dateError(true);
+	        } else {
+	          _this2.props.dateError(false);
 	        }
 	        _this2.hideCalendar();
 	      }
@@ -225,6 +227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    if (!value || value.length === 0) {
 	      valid = true;
+	      dateErrorMessage = '';
 	    }
 	    this.setState({ dateValid: valid, dateErrorMessage: errorMessage });
 	  },
