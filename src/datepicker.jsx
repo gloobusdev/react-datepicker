@@ -130,7 +130,7 @@ var DatePicker = React.createClass({
         errorMessage = "dateFormatError"
       }else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true) ) {
         errorMessage = "minDateError"
-      }else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true) ) {
+      }else if (!(rMaxDate ? rDate.isSameOrAfter(rMaxDate) : true) ) {
         errorMessage = "maxDateError"
       }
     }
