@@ -219,7 +219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        errorMessage = "dateFormatError";
 	      } else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true)) {
 	        errorMessage = "minDateError";
-	      } else if (!(rMaxDate ? rDate.isSameOrAfter(rMaxDate) : true)) {
+	      } else if (!(rMaxDate ? rDate.isSameOrBefore(rMaxDate) : true)) {
 	        errorMessage = "maxDateError";
 	      }
 	    }
