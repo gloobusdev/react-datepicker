@@ -216,11 +216,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.setSelected(date);
 	    } else {
 	      if (!this.validateDate(value)) {
-	        errorMessage = "FORMAT_ERROR";
+	        errorMessage = "dateFormatError";
 	      } else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true)) {
-	        errorMessage = "MIN_DATE_ERROR";
+	        errorMessage = "minDateError";
 	      } else if (!(rMinDate ? rDate.isSameOrAfter(rMinDate) : true)) {
-	        errorMessage = "MAX_DATE_ERROR";
+	        errorMessage = "maxDateError";
 	      }
 	    }
 	    if (!value || value.length === 0) {
